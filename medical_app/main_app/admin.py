@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+
+admin.site.register(Organ)
+admin.site.register(Symptom)
+admin.site.register(Disease)
+admin.site.register(DiseaseSymptom)
