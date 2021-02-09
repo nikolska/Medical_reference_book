@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Organs{% endblock %}
+
+
+{% block content %}
+
+{% if organs %}
+    {% for organ in organs %}
+        <li><b>{{ organ.name }}:</b> {{ organ.description }}</li><br>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
