@@ -23,4 +23,5 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='home_page'),
     path('admin/', admin.site.urls),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
+    path('symptoms/', SymptomsListView.as_view(), name='symptoms_list')
 ]

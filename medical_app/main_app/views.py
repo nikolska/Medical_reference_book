@@ -19,3 +19,12 @@ class OrgansListView(View):
         organs = Organ.objects.order_by('name')
         ctx = {'organs': organs}
         return render(request, self.template, ctx)
+
+
+class SymptomsListView(View):
+    template = 'symptoms_list.html'
+
+    def get(self, request):
+        symptoms = Symptom.objects.order_by('name')
+        ctx = {'symptoms': symptoms}
+        return render(request, self.template, ctx)

@@ -11,7 +11,7 @@ class Organ(models.Model):
 
 class Symptom(models.Model):
     name = models.CharField(max_length=255)
-    affected_organ = models.ForeignKey(Organ, on_delete=models.CASCADE)
+    affected_organ = models.ForeignKey(Organ, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
