@@ -21,11 +21,17 @@ body {
     text-decoration: none;
 }
 
+.search-disease {
+    display: flex;
+    justify-content: space-between;
+}
+
 table, th, td {
     border-collapse: collapse;
     border: 1px solid black;
     padding: 5px;
 }
+
 th {
     background-color: white;
     text-align: center;

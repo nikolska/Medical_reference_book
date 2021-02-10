@@ -5,12 +5,8 @@
 
 {% block content %}
 
-{% if organs %}
-    {% for organ in organs %}
-        <li><b>{{ organ.name }}:</b> {{ organ.description }}</li><br>
-    {% endfor %}
-{% else %}
-    <h1 align="center"> No organs in database!</h1>
-{% endif %}
+{% for organ in organs %}
+    <li><b>{{ organ.name }}:</b> {{ organ.description }}</li><br>
+{% endfor %}
 
 {% endblock %}

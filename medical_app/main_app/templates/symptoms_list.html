@@ -5,12 +5,8 @@
 
 {% block content %}
 
-{% if symptoms %}
-    {% for symptom in symptoms %}
-        <li><b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})</li><br>
-    {% endfor %}
-{% else %}
-    <h1 align="center"> No symptoms in database!</h1>
-{% endif %}
+{% for symptom in symptoms %}
+    <li><b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})</li><br>
+{% endfor %}
 
 {% endblock %}
