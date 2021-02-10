@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Disease {{ disease.name }}{% endblock %}
+
+
+{% block content %}
+
+<h1 align="center">{{ disease.name }}</h1><br>
+<p><b>Description:</b> {{ disease.description }}</p><br>
+<p><b>Affected organs:</b> {{ disease.affected_organs.all|join:", " }}</p>
+<p><table>
+    <th>Symptoms</th>
+    <th>Frequency</th>
+        {% for symptom in symptoms_details %}
+            <tr>
+                <td>{{ symptom.symptom }}</td>
+                <td align="center">{{ symptom.get_symptom_frequency_display }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</p><br>
+<p><b>Geographical area:</b> {{ disease.geographical_area }}</p><br>
+<p><b>Treatment:</b> {{ disease.treatment }}</p><br>
+
+{% endblock %}
