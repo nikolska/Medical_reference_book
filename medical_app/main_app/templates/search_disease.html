@@ -5,6 +5,7 @@
 
 {% block content %}
 
+<br><br>
 <form method="POST">
     {% csrf_token %}
     <div class="search-disease">
@@ -16,16 +17,28 @@
             {% endfor %}
         </div>
         <div>
-            <label for="symptoms"><b>Symptoms:</b></label><br>
-            {% for symptom in symptoms %}
-                <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
-                <label for="symptoms">{{ symptom.name }}</label><br>
-            {% endfor %}
+            <p align="center"><label for="symptoms"><b>Symptoms:</b></label></p>
+            {% if symptoms %}
+                <table>
+                    {% for symptom in symptoms %}
+                        {% if forloop.counter0|divisibleby:4 %}
+                            <tr>
+                        {% endif %}
+                            <td>
+                                <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+                                <label for="symptoms">{{ symptom.name }}</label><br>
+                            </td>
+                        {% if forloop.counter|divisibleby:4 %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No symptoms.</p>
+            {% endif %}
         </div>
     </div>
-
     <br><br><p align="center"><input type="submit" value="Search"></p>
-
 </form>
 
 {% endblock %}

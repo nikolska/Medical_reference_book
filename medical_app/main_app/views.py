@@ -1,5 +1,6 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.template.loader import render_to_string
 from django.views.generic import View
 
 from .models import *
@@ -57,7 +58,7 @@ class SearchDiseaseView(View):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         organs = get_list_or_404(Organ.objects.order_by('name'))
         ctx = {'symptoms': symptoms,
-               'organs': organs}
+            'organs': organs}
         return render(request, self.template, ctx)
 
     def post(self, request):
@@ -75,10 +76,9 @@ class SearchDiseaseView(View):
                 diseases = Disease.objects.filter(symptoms__in=symptoms).distinct()
             except:
                 raise Http404
-            
+
         if not organs and not symptoms:
             diseases = Disease.objects.order_by('name')
 
         ctx = {'diseases': diseases}
         return render(request, 'diseases_list.html', ctx)
-

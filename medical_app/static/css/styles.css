@@ -5,8 +5,9 @@ body {
 .body-content {
     padding: 20px;
 }
+
 .menu {
-    background-color: #87CEEB;
+    background-color: #87ceeb;
     padding: 5px;
     margin: 10px 5px;
     display: flex;
@@ -23,7 +24,7 @@ body {
 
 .search-disease {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 table, th, td {
