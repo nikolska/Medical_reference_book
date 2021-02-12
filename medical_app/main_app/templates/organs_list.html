@@ -5,6 +5,8 @@
 
 {% block content %}
 
+<button type="button" class="btn btn-outline-light"><a href="{% url 'add_organ' %}">Add new organ</a></button>
+<br><br>
 {% for organ in organs %}
     <li><b>{{ organ.name }}:</b> {{ organ.description }}</li><br>
 {% endfor %}

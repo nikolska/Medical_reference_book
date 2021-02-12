@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Add new organ{% endblock %}
+
+
+{% block content %}
+
+{% if message %}
+<h3 style="color: red" align="center">{{ message }}</h3>
+{% endif %}
+
+<form action="" method="POST">
+    {% csrf_token%}
+
+    <div class="mb-3">
+        <label for="name" class="form-label"><b>Organ:</b></label>
+        <input type="text" maxlength="255" class="form-control" id="name" name="name">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label"><b>Description:</b></label>
+        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+    </div>
+    <input type="submit" value="Add">
+</form>
+
+{% endblock %}

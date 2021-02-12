@@ -1,6 +1,7 @@
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import HttpResponse, Http404, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.generic import View
 
 from .models import *
@@ -82,3 +83,27 @@ class SearchDiseaseView(View):
 
         ctx = {'diseases': diseases}
         return render(request, 'diseases_list.html', ctx)
+
+
+class AddNewOrganView(View):
+    template = 'add_new_organ.html'
+
+    def get(self, request):
+        return render(request, self.template)
+
+    def post(self, request):
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+
+        if not name:
+            ctx = {'message': 'Name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if len(name) > 255:
+            ctx = {'message': 'Name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        Organ.objects.create(
+            name=name,
+            description=description
+        )
+        return HttpResponseRedirect(reverse('organs_list'))
