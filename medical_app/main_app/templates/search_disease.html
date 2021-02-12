@@ -5,30 +5,43 @@
 
 {% block content %}
 
-<br><br>
 <form method="POST">
     {% csrf_token %}
     <div class="search-disease">
         <div>
-            <label for="affected_organs"><b>Affected organs:</b></label><br>
-            {% for organ in organs %}
-                <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
-                <label for="affected_organs">{{ organ.name }}</label><br>
-            {% endfor %}
+            <p align="center"><label for="affected_organs"><b>Affected organs:</b></label></p>
+            {% if organs %}
+                <table class="search-diseases-table">
+                    {% for organ in organs %}
+                        {% if forloop.counter0|divisibleby:2 %}
+                            <tr>
+                        {% endif %}
+                            <td>
+                                <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
+                                <label for="affected_organs">{{ organ.name }}</label><br>
+                            </td>
+                        {% if forloop.counter|divisibleby:2 %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No organs.</p>
+            {% endif %}
         </div>
         <div>
             <p align="center"><label for="symptoms"><b>Symptoms:</b></label></p>
             {% if symptoms %}
-                <table>
+                <table class="search-diseases-table">
                     {% for symptom in symptoms %}
-                        {% if forloop.counter0|divisibleby:4 %}
+                        {% if forloop.counter0|divisibleby:5 %}
                             <tr>
                         {% endif %}
                             <td>
                                 <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
                                 <label for="symptoms">{{ symptom.name }}</label><br>
                             </td>
-                        {% if forloop.counter|divisibleby:4 %}
+                        {% if forloop.counter|divisibleby:5 %}
                             </tr>
                         {% endif %}
                     {% endfor %}

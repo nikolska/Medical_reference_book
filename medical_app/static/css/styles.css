@@ -37,3 +37,8 @@ th {
     background-color: white;
     text-align: center;
 }
+
+.search-diseases-table td {
+    padding: 3px 13px;
+    max-width: 200px;
+}
