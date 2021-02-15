@@ -5,17 +5,6 @@
 
 {% block content %}
 
-<!--<input id="myInput" type="text" placeholder="search symptom.."><br><br>-->
-<!--    {% if symptoms %}-->
-<!--        <ul id="myList">-->
-<!--            {% for symptom in symptoms %}-->
-<!--                <li><input type="checkbox" id="symptom"> <label for="symptom">{{ symptom.name }}</label> </li>-->
-<!--            {% endfor %}-->
-<!--        </ul>-->
-<!--    {% else %}-->
-<!--        <p>No symptoms found.</p>-->
-<!--    {% endif %}-->
-
 <form method="POST">
     {% csrf_token %}
     <div class="search-disease">

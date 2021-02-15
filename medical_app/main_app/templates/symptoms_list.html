@@ -5,6 +5,8 @@
 
 {% block content %}
 
+<button type="button" class="btn btn-outline-light"><a href="{% url 'add_symptom' %}">Add new symptom</a></button>
+<br><br>
 {% for symptom in symptoms %}
     <li><b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})</li><br>
 {% endfor %}

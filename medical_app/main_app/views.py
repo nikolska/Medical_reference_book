@@ -107,3 +107,29 @@ class AddNewOrganView(View):
             description=description
         )
         return HttpResponseRedirect(reverse('organs_list'))
+
+
+class AddNewSymptomView(View):
+    template = 'add_new_symptom.html'
+
+    def get(self, request):
+        organs = get_list_or_404(Organ.objects.order_by('name'))
+        ctx = {'organs': organs}
+        return render(request, self.template, ctx)
+
+    def post(self, request):
+        name = request.POST.get('name')
+        affected_organ = request.POST.get('affected_organ')
+
+        if not name:
+            ctx = {'message': 'Name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if len(name) > 255:
+            ctx = {'message': 'Name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        Symptom.objects.create(
+            name=name,
+            affected_organ=Organ.objects.get(pk=affected_organ)
+        )
+        return HttpResponseRedirect(reverse('symptoms_list'))
