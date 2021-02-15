@@ -5,6 +5,17 @@
 
 {% block content %}
 
+<!--<input id="myInput" type="text" placeholder="search symptom.."><br><br>-->
+<!--    {% if symptoms %}-->
+<!--        <ul id="myList">-->
+<!--            {% for symptom in symptoms %}-->
+<!--                <li><input type="checkbox" id="symptom"> <label for="symptom">{{ symptom.name }}</label> </li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+<!--    {% else %}-->
+<!--        <p>No symptoms found.</p>-->
+<!--    {% endif %}-->
+
 <form method="POST">
     {% csrf_token %}
     <div class="search-disease">
@@ -31,24 +42,18 @@
         </div>
         <div>
             <p align="center"><label for="symptoms"><b>Symptoms:</b></label></p>
+            <input id="myInput" type="text" placeholder="search symptom.."><br><br>
             {% if symptoms %}
-                <table class="search-diseases-table">
+                <ul id="myList">
                     {% for symptom in symptoms %}
-                        {% if forloop.counter0|divisibleby:5 %}
-                            <tr>
-                        {% endif %}
-                            <td>
-                                <input type="search">
-                                <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
-                                <label for="symptoms">{{ symptom.name }}</label><br>
-                            </td>
-                        {% if forloop.counter|divisibleby:5 %}
-                            </tr>
-                        {% endif %}
+                        <li style="list-style:none;">
+                            <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+                            <label for="symptoms">{{ symptom.name }}</label>
+                        </li>
                     {% endfor %}
-                </table>
+                </ul>
             {% else %}
-                <p>No symptoms.</p>
+                <p>No symptoms found.</p>
             {% endif %}
         </div>
     </div>

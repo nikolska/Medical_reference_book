@@ -59,7 +59,7 @@ class SearchDiseaseView(View):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         organs = get_list_or_404(Organ.objects.order_by('name'))
         ctx = {'symptoms': symptoms,
-            'organs': organs}
+               'organs': organs}
         return render(request, self.template, ctx)
 
     def post(self, request):
