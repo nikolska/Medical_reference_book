@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Add new disease{% endblock %}
+
+
+{% block content %}
+
+{% if message %}
+    <h3 style="color: red;" align="center">{{ message }}</h3>
+{% endif %}
+
+<form action="" method="POST">
+    {% csrf_token%}
+
+    <div class="mb-3">
+        <label for="name" class="form-label"><b>Disease:</b></label>
+        <input type="text" maxlength="255" class="form-control" id="name" name="name">
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label"><b>Description:</b></label>
+        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Affected organs:</b></label><br>
+        {% for organ in organs %}
+            <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
+            <label for="affected_organs">{{ organ.name }}</label><br>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Symptoms:</b></label><br>
+        {% for symptom in symptoms %}
+            <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+            <label for="symptoms">{{ symptom.name }}</label>
+            (<i>frequency:</i>
+            {% for symptom_frequency in symptom_frequency_choices %}
+                <input type="checkbox" id="symptom_frequency" name="symptom_frequency" value="{{ symptom_frequency.0 }}">
+                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
+            {% endfor %})<br>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        <label for="geographical_area" class="form-label"><b>Geographical area:</b></label>
+        <textarea class="form-control" id="geographical_area" name="geographical_area" rows="2"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="treatment" class="form-label"><b>Treatment:</b></label>
+        <textarea class="form-control" id="treatment" name="treatment" rows="5"></textarea>
+    </div>
+
+    <input type="submit" value="Add">
+</form>
+
+{% endblock %}

@@ -133,3 +133,79 @@ class AddNewSymptomView(View):
             affected_organ=Organ.objects.get(pk=affected_organ)
         )
         return HttpResponseRedirect(reverse('symptoms_list'))
+
+
+class AddNewDiseaseView(View):
+    template = 'add_new_disease.html'
+
+    def get_ctx(self):
+        organs = get_list_or_404(Organ.objects.order_by('name'))
+        symptoms = get_list_or_404(Symptom.objects.order_by('name'))
+        choices = DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES
+        ctx = {'organs': organs,
+               'symptoms': symptoms,
+               'symptom_frequency_choices': choices}
+        return ctx
+
+    def get(self, request):
+        ctx = self.get_ctx()
+        return render(request, self.template, ctx)
+
+    def post(self, request):
+        ctx = self.get_ctx()
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        geographical_area = request.POST.get('geographical_area')
+        treatment = request.POST.get('treatment')
+        affected_organs = request.POST.getlist('affected_organs')
+        symptoms = request.POST.getlist('symptoms')
+        symptom_frequency = request.POST.getlist('symptom_frequency')
+
+        if not name:
+            ctx['message'] = 'Name cannot be empty!'
+            return render(request, self.template, ctx)
+        if len(name) > 255:
+            ctx['message'] = 'Name cannot be longer than 255 characters!'
+            return render(request, self.template, ctx)
+
+        if not description:
+            ctx['message'] = 'Description cannot be empty!'
+            return render(request, self.template, ctx)
+
+        if not geographical_area:
+            ctx['message'] = 'Geographical area cannot be empty!'
+            return render(request, self.template, ctx)
+
+        if not treatment:
+            ctx = {'message': 'Treatment cannot be empty!'}
+            return render(request, self.template, ctx)
+
+        if not affected_organs:
+            ctx = {'message': 'Choose one or more affected organs!'}
+            return render(request, self.template, ctx)
+
+        if not symptoms:
+            ctx = {'message': 'Choose one or more symptoms!'}
+            return render(request, self.template, ctx)
+
+        disease = Disease.objects.create(
+            name=name,
+            description=description,
+            geographical_area=geographical_area,
+            treatment=treatment,
+        )
+
+        if affected_organs:
+            disease.affected_organs.set(affected_organs)
+
+        # if symptoms:
+        #     for symptom in symptoms:
+        #         symptom = DiseaseSymptom.objects.create(
+        #             disease=disease,
+        #             symptom=Symptom.objects.get(pk=symptom),
+        #             symptom_frequency=symptom_frequency
+        #         )
+        #         disease.symptoms.set = DiseaseSymptom.objects.get(pk=symptom.pk)
+
+        disease.save()
+        return HttpResponseRedirect(reverse('diseases_list'))

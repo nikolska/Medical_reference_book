@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('diseases/', DiseasesListView.as_view(), name='diseases_list'),
     re_path(r'^diseases/(?P<disease_pk>\d+)/$', DiseaseDetailsView.as_view(), name='disease_details'),
+    path('diseases/add/', AddNewDiseaseView.as_view(), name='add_disease'),
     path('diseases/search/', SearchDiseaseView.as_view(), name='search_disease'),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
     path('organs/add/', AddNewOrganView.as_view(), name='add_organ'),
