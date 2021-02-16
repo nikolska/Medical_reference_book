@@ -1,6 +1,5 @@
-from django.http import HttpResponse, Http404, JsonResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.generic import View
 
@@ -177,35 +176,34 @@ class AddNewDiseaseView(View):
             return render(request, self.template, ctx)
 
         if not treatment:
-            ctx = {'message': 'Treatment cannot be empty!'}
+            ctx['message'] = 'Treatment cannot be empty!'
             return render(request, self.template, ctx)
 
         if not affected_organs:
-            ctx = {'message': 'Choose one or more affected organs!'}
+            ctx['message'] = 'Choose one or more affected organs!'
             return render(request, self.template, ctx)
 
         if not symptoms:
-            ctx = {'message': 'Choose one or more symptoms!'}
+            ctx['message'] = 'Choose one or more symptoms!'
             return render(request, self.template, ctx)
 
         disease = Disease.objects.create(
             name=name,
             description=description,
             geographical_area=geographical_area,
-            treatment=treatment,
+            treatment=treatment
         )
 
-        if affected_organs:
-            disease.affected_organs.set(affected_organs)
+        disease.affected_organs.set(affected_organs)
 
-        # if symptoms:
-        #     for symptom in symptoms:
-        #         symptom = DiseaseSymptom.objects.create(
-        #             disease=disease,
-        #             symptom=Symptom.objects.get(pk=symptom),
-        #             symptom_frequency=symptom_frequency
-        #         )
-        #         disease.symptoms.set = DiseaseSymptom.objects.get(pk=symptom.pk)
+        for i in range(0, len(symptoms)):
+            symptom = Symptom.objects.get(pk=symptoms[i])
+            DiseaseSymptom.objects.create(
+                disease=disease,
+                symptom=symptom,
+                symptom_frequency=symptom_frequency[i]
+            )
+        #     disease.symptoms.set = DiseaseSymptom.objects.get(pk=symptom.pk)
 
         disease.save()
         return HttpResponseRedirect(reverse('diseases_list'))

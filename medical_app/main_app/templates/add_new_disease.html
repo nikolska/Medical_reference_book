@@ -33,13 +33,17 @@
     <div class="mb-3">
         <label class="form-label"><b>Symptoms:</b></label><br>
         {% for symptom in symptoms %}
-            <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+            <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}" data-select="{{ symptom.pk }}">
             <label for="symptoms">{{ symptom.name }}</label>
             (<i>frequency:</i>
-            {% for symptom_frequency in symptom_frequency_choices %}
-                <input type="checkbox" id="symptom_frequency" name="symptom_frequency" value="{{ symptom_frequency.0 }}">
-                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
-            {% endfor %})<br>
+<!--                <select size="1" id="{{ symptom.pk }}" name="symptom_frequency">-->
+                {% for symptom_frequency in symptom_frequency_choices %}
+<!--                        <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>-->
+                    <input type="checkbox" id="symptom_frequency" name="symptom_frequency" value="{{ symptom_frequency.0 }}">
+                    <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
+                {% endfor %}
+<!--                </select>-->
+            )<br>
         {% endfor %}
     </div>
 
