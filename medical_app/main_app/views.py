@@ -187,6 +187,13 @@ class AddNewDiseaseView(View):
             ctx['message'] = 'Choose one or more symptoms!'
             return render(request, self.template, ctx)
 
+        if not symptom_frequency:
+            symptom_frequency = [0 for _ in range(len(symptoms))]
+
+        if len(symptom_frequency) != len(symptoms):
+            ctx['message'] = "Choose symptoms with correct symptom's frequency!"
+            return render(request, self.template, ctx)
+
         disease = Disease.objects.create(
             name=name,
             description=description,
@@ -203,7 +210,6 @@ class AddNewDiseaseView(View):
                 symptom=symptom,
                 symptom_frequency=symptom_frequency[i]
             )
-        #     disease.symptoms.set = DiseaseSymptom.objects.get(pk=symptom.pk)
 
         disease.save()
         return HttpResponseRedirect(reverse('diseases_list'))
