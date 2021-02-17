@@ -24,27 +24,43 @@
 
     <div class="mb-3">
         <label class="form-label"><b>Affected organs:</b></label><br>
-        {% for organ in organs %}
-            <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
-            <label for="affected_organs">{{ organ.name }}</label><br>
-        {% endfor %}
+        <input id="myInput" type="text" placeholder="search organ.."><br><br>
+            {% if organs %}
+                <ul id="myList">
+                    {% for organ in organs %}
+                        <li style="list-style:none;">
+                            <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
+                            <label for="affected_organs">{{ organ.name }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No organs found.</p>
+            {% endif %}
     </div>
 
     <div class="mb-3">
         <label class="form-label"><b>Symptoms:</b></label><br>
-        {% for symptom in symptoms %}
-            <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}" data-select="{{ symptom.pk }}">
-            <label for="symptoms">{{ symptom.name }}</label>
-            (<i>frequency:</i>
-<!--                <select size="1" id="{{ symptom.pk }}" name="symptom_frequency">-->
-                {% for symptom_frequency in symptom_frequency_choices %}
-<!--                        <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>-->
-                    <input type="checkbox" id="symptom_frequency" name="symptom_frequency" value="{{ symptom_frequency.0 }}">
-                    <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
+        <input id="myInput" type="text" placeholder="search symptom.."><br><br>
+        {% if symptoms %}
+            <ul id="myList">
+                {% for symptom in symptoms %}
+                    <li style="list-style:none;">
+                        <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+                        <label for="symptoms">{{ symptom.name }}</label>
+                        (<i>frequency:</i>
+                            {% for symptom_frequency in symptom_frequency_choices %}
+                                <input type="checkbox" id="symptom_frequency" name="symptom_frequency"
+                                       value="{{ symptom_frequency.0 }}">
+                                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
+                            {% endfor %}
+                        )<br>
+                    </li>
                 {% endfor %}
-<!--                </select>-->
-            )<br>
-        {% endfor %}
+            </ul>
+        {% else %}
+            <p>No symptoms found.</p>
+        {% endif %}
     </div>
 
     <div class="mb-3">

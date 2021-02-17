@@ -7,10 +7,17 @@
 
 <button type="button" class="btn btn-outline-light"><a href="{% url 'add_disease' %}">Add new disease</a></button>
 <br><br>
+<input id="myInput" type="text" placeholder="search disease.."><br><br>
 {% if diseases %}
-    {% for disease in diseases %}
-        <li><a href="{% url 'disease_details' disease.pk %}"><b>{{ disease.name }}</b></a></li><br>
-    {% endfor %}
+    <ul id="myList">
+        {% for disease in diseases %}
+            <li style="list-style:none;">
+                <span>&#8226;</span> <a href="{% url 'disease_details' disease.pk %}"><b>{{ disease.name }}</b></a><br><br>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No diseases found.</p>
 {% endif %}
 
 {% endblock %}
