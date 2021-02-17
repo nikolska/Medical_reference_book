@@ -1,8 +1,11 @@
+import re
+
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views.generic import View
 
+from .clcrypto import *
 from .models import *
 
 
@@ -213,3 +216,73 @@ class AddNewDiseaseView(View):
 
         disease.save()
         return HttpResponseRedirect(reverse('diseases_list'))
+
+
+class LogInView(View):
+    template = 'log_in.html'
+
+    def check_email(self, request, email):
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if re.search(regex, email):
+            return email
+        else:
+            ctx = {'message': 'Incorrect email!'}
+            return render(request, self.template, ctx)
+
+    def hash_password(self, password, salt=''):
+        password = hash_password(password, salt)
+        return password
+
+    def get(self, request):
+        return render(request, self.template)
+
+    def post(self, request):
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if not first_name:
+            ctx = {'message': 'First name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if not last_name:
+            ctx = {'message': 'Last name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if not email:
+            ctx = {'message': 'Email cannot be empty!'}
+            return render(request, self.template, ctx)
+        if not password:
+            ctx = {'message': 'Password cannot be empty!'}
+            return render(request, self.template, ctx)
+
+        if len(first_name) > 255:
+            ctx = {'message': 'First name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+        if len(last_name) > 255:
+            ctx = {'message': 'Last name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        email = self.check_email(request, email)
+
+        if len(password) < 8:
+            ctx = {'message': 'Password must be longer than 8 characters!'}
+            return render(request, self.template, ctx)
+        if len(password) > 20:
+            ctx = {'message': 'Password cannot be longer than 20 characters!'}
+            return render(request, self.template, ctx)
+
+        for sing in password:
+            if sing not in ALPHABET:
+                ctx = {'message': 'Password must not contains spaces, special characters, or emoji!'}
+                return render(request, self.template, ctx)
+
+        password = self.hash_password(password)
+
+        User.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password
+        )
+        ctx = {'message': 'Registration completed successfully!'}
+        return render(request, self.template, ctx)

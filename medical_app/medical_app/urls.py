@@ -26,6 +26,7 @@ urlpatterns = [
     re_path(r'^diseases/(?P<disease_pk>\d+)/$', DiseaseDetailsView.as_view(), name='disease_details'),
     path('diseases/add/', AddNewDiseaseView.as_view(), name='add_disease'),
     path('diseases/search/', SearchDiseaseView.as_view(), name='search_disease'),
+    path('log_in/', LogInView.as_view(), name='log_in'),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
     path('organs/add/', AddNewOrganView.as_view(), name='add_organ'),
     path('symptoms/', SymptomsListView.as_view(), name='symptoms_list'),
