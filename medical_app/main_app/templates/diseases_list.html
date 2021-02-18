@@ -12,7 +12,9 @@
     <ul id="myList">
         {% for disease in diseases %}
             <li style="list-style:none;">
-                <span>&#8226;</span> <a href="{% url 'disease_details' disease.pk %}"><b>{{ disease.name }}</b></a><br><br>
+                <span>&#8226;</span>
+                <a style="color: black" href="{% url 'disease_details' disease.pk %}">
+                    <b>{{ disease.name }}</b></a><br><br>
             </li>
         {% endfor %}
     </ul>

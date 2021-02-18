@@ -218,8 +218,19 @@ class AddNewDiseaseView(View):
         return HttpResponseRedirect(reverse('diseases_list'))
 
 
+class AuthorizationView(View):
+    template = 'authorization.html'
+
+    def get(self, request):
+        return render(request, self.template)
+
+
 class LogInView(View):
-    template = 'log_in.html'
+    pass
+
+
+class RegistrationView(View):
+    template = 'registration.html'
 
     def check_email(self, request, email):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
