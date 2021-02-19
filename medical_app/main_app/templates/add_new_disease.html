@@ -41,9 +41,9 @@
 
     <div class="mb-3">
         <label class="form-label"><b>Symptoms:</b></label><br>
-        <input id="myInput" type="text" placeholder="search symptom.."><br><br>
+        <input id="myInput2" type="text" placeholder="search symptom.."><br><br>
         {% if symptoms %}
-            <ul id="myList">
+            <ul id="myList2">
                 {% for symptom in symptoms %}
                     <li style="list-style:none;">
                         <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
