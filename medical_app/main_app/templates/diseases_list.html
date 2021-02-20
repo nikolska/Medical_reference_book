@@ -7,11 +7,11 @@
 
 <button type="button" class="btn btn-outline-light"><a href="{% url 'add_disease' %}">Add new disease</a></button>
 <br><br>
-<input id="myInput" type="text" placeholder="search disease.."><br><br>
+<input id="searchInput" type="text" placeholder="search disease.."><br><br>
 {% if diseases %}
-    <ul id="myList">
+    <ul id="searchList">
         {% for disease in diseases %}
-            <li style="list-style:none;">
+            <li style="list-style:none;" data-name="{{ disease.name }}">
                 <span>&#8226;</span>
                 <a style="color: black" href="{% url 'disease_details' disease.pk %}">
                     <b>{{ disease.name }}</b></a><br><br>

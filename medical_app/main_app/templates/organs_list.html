@@ -7,11 +7,11 @@
 
 <button type="button" class="btn btn-outline-light"><a href="{% url 'add_organ' %}">Add new organ</a></button>
 <br><br>
-<input id="myInput" type="text" placeholder="search organ.."><br><br>
+<input id="searchInput" type="text" placeholder="search organ.."><br><br>
 {% if organs %}
-    <ul id="myList">
+    <ul id="searchList">
         {% for organ in organs %}
-            <li style="list-style:none;">
+            <li style="list-style:none;" data-name="{{ organ.name }}">
                 <span>&#8226;</span> <b>{{ organ.name }}:</b> {{ organ.description }}<br><br>
             </li>
         {% endfor %}

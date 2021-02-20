@@ -7,11 +7,11 @@
 
 <button type="button" class="btn btn-outline-light"><a href="{% url 'add_symptom' %}">Add new symptom</a></button>
 <br><br>
-<input id="myInput" type="text" placeholder="search symptom.."><br><br>
+<input id="searchInput" type="text" placeholder="search symptom.."><br><br>
 {% if symptoms %}
-    <ul id="myList">
+    <ul id="searchList">
         {% for symptom in symptoms %}
-            <li style="list-style:none;">
+            <li style="list-style:none;" data-name="{{ symptom.name }}">
                 <span>&#8226;</span> <b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})<br><br>
             </li>
         {% endfor %}

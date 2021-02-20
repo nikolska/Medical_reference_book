@@ -15,3 +15,17 @@ $(document).ready(function(){
     });
   });
 });
+
+$(document).ready(function(){
+  $("#searchInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#searchList li").each( function() {
+      let text = $(this).attr('data-name').toLowerCase();
+      if (text.includes(value)) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    })
+  });
+});
