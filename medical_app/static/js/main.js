@@ -29,3 +29,25 @@ $(document).ready(function(){
     })
   });
 });
+
+/*
+Add new disease: if input is checked -> check selected option -> save id data object.
+
+const inputs = document.querySelectorAll("input.input-class-s");
+const select_list = document.querySelectorAll("select.select-s");
+
+function checkingSelect() {
+  for (let i=0; i<inputs.length; i++) {
+    if (inputs[i].checked) {
+      const input = inputs[i].value;
+      const select = select_list[i].value;
+      const data = {'symptom': input,
+        'frequency': select};
+      console.log(data);
+      return data;
+    }
+  }
+}
+
+checkingSelect();
+*/
