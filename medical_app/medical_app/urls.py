@@ -21,7 +21,7 @@ from main_app.views import *
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home_page'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('authorization/', AuthorizationView.as_view(), name='authorization'),
     path('diseases/', DiseasesListView.as_view(), name='diseases_list'),
     re_path(r'^diseases/(?P<disease_pk>\d+)/$', DiseaseDetailsView.as_view(), name='disease_details'),
