@@ -154,6 +154,7 @@ class AddNewDiseaseView(View):
         return render(request, self.template, ctx)
 
     def post(self, request):
+        # Try QueryString or Ajax to send post data
         ctx = self.get_ctx()
         name = request.POST.get('name')
         description = request.POST.get('description')
