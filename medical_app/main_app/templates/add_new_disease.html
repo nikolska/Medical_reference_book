@@ -46,14 +46,19 @@
             <ul id="myList2">
                 {% for symptom in symptoms %}
                     <li style="list-style:none;">
-                        <input type="checkbox" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
+                        <input type="checkbox" class="input-symptoms" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
                         <label for="symptoms">{{ symptom.name }}</label>
                         (<i>frequency:</i>
+                        <select class="select-frequency" name="symptom_frequency" id="select-frequency">
                             {% for symptom_frequency in symptom_frequency_choices %}
-                                <input type="checkbox" id="symptom_frequency" name="symptom_frequency"
-                                       value="{{ symptom_frequency.0 }}">
-                                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>
+                                <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>
                             {% endfor %}
+                        </select>
+<!--                            {% for symptom_frequency in symptom_frequency_choices %}-->
+<!--                                <input type="checkbox" id="symptom_frequency" name="symptom_frequency"-->
+<!--                                       value="{{ symptom_frequency.0 }}">-->
+<!--                                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>-->
+<!--                            {% endfor %}-->
                         )<br>
                     </li>
                 {% endfor %}
@@ -73,7 +78,7 @@
         <textarea class="form-control" id="treatment" name="treatment" rows="5"></textarea>
     </div>
 
-    <input type="submit" value="Add">
+    <input type="submit" id="btn-add-disease" value="Add">
 </form>
 
 {% endblock %}
