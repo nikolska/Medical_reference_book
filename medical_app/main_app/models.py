@@ -2,6 +2,8 @@ from django.db import models
 
 
 class Organ(models.Model):
+    ''' Human organs model. '''
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
@@ -10,6 +12,8 @@ class Organ(models.Model):
 
 
 class Symptom(models.Model):
+    ''' Symptoms model. '''
+
     name = models.CharField(max_length=255)
     affected_organ = models.ForeignKey(Organ, on_delete=models.CASCADE, null=True)
 
@@ -18,6 +22,8 @@ class Symptom(models.Model):
 
 
 class Disease(models.Model):
+    ''' Disease model. '''
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     symptoms = models.ManyToManyField(Symptom, through='DiseaseSymptom')
@@ -30,6 +36,8 @@ class Disease(models.Model):
 
 
 class DiseaseSymptom(models.Model):
+    ''' Disease symptom frequency model. Related with Disease model. '''
+
     SYMPTOM_FREQUENCY_CHOICES = (
         (0, 'not chosen'),
         (1, 'very rarely'),
@@ -48,6 +56,8 @@ class DiseaseSymptom(models.Model):
 
 
 class User(models.Model):
+    ''' User model. '''
+
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     email = models.EmailField(unique=True)

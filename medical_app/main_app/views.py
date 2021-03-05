@@ -10,6 +10,8 @@ from .models import *
 
 
 class HomePageView(View):
+    ''' Start (home) page. '''
+
     template = 'home_page.html'
 
     def get(self, request):
@@ -17,6 +19,8 @@ class HomePageView(View):
 
 
 class OrgansListView(View):
+    ''' Page with organs list from DB. '''
+
     template = 'organs_list.html'
 
     def get(self, request):
@@ -26,6 +30,8 @@ class OrgansListView(View):
 
 
 class SymptomsListView(View):
+    ''' Page with all symptoms from DB. '''
+
     template = 'symptoms_list.html'
 
     def get(self, request):
@@ -35,6 +41,8 @@ class SymptomsListView(View):
 
 
 class DiseasesListView(View):
+    ''' Page with all disease from DB. '''
+
     template = 'diseases_list.html'
 
     def get(self, request):
@@ -44,6 +52,8 @@ class DiseasesListView(View):
 
 
 class DiseaseDetailsView(View):
+    ''' Page with disease's details like description, affected organs, symptoms, treatment. '''
+
     template = 'disease_details.html'
 
     def get(self, request, **kwargs):
@@ -55,6 +65,8 @@ class DiseaseDetailsView(View):
 
 
 class SearchDiseaseView(View):
+    ''' Searching for disease by symptoms and affected organs. '''
+
     template = 'search_disease.html'
 
     def get(self, request):
@@ -88,6 +100,8 @@ class SearchDiseaseView(View):
 
 
 class AddNewOrganView(View):
+    ''' Adding new organ to DB. '''
+
     template = 'add_new_organ.html'
 
     def get(self, request):
@@ -112,6 +126,8 @@ class AddNewOrganView(View):
 
 
 class AddNewSymptomView(View):
+    ''' Adding new symptom to DB. '''
+
     template = 'add_new_symptom.html'
 
     def get(self, request):
@@ -138,6 +154,8 @@ class AddNewSymptomView(View):
 
 
 class AddNewDiseaseView(View):
+    ''' Adding new disease to DB. '''
+
     template = 'add_new_disease.html'
 
     def get_ctx(self):
@@ -220,6 +238,8 @@ class AddNewDiseaseView(View):
 
 
 class AuthorizationView(View):
+    ''' Authorization page with 2 options: login or register. '''
+
     template = 'authorization.html'
 
     def get(self, request):
@@ -227,10 +247,14 @@ class AuthorizationView(View):
 
 
 class LogInView(View):
+    ''' Login page. '''
+
     pass
 
 
 class RegistrationView(View):
+    ''' Register page. '''
+
     template = 'registration.html'
 
     def check_email(self, request, email):
