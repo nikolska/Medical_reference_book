@@ -1,4 +1,9 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+# Zrobić 2 grupy użytkowników: Lekarz i Pacient.
 
 
 class Organ(models.Model):
@@ -30,6 +35,8 @@ class Disease(models.Model):
     affected_organs = models.ManyToManyField(Organ)
     geographical_area = models.TextField()
     treatment = models.TextField()
+    # GeographicalArea model. many to many z Disease
+    # Treatment model many to many z Disease
 
     def __str__(self):
         return self.name
@@ -53,16 +60,3 @@ class DiseaseSymptom(models.Model):
 
     def __str__(self):
         return f'{self.disease} / {self.symptom}'
-
-
-class User(models.Model):
-    ''' User model. '''
-
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}'
-
