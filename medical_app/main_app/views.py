@@ -60,6 +60,29 @@ class TreatmentsListView(View):
         return render(request, self.template, self.get_ctx())
 
 
+class GeographicalAreaListView(View):
+    ''' Page with all geographical areas from DB. '''
+
+    template = 'geographical_areas_list.html'
+
+    def get_ctx(self):
+        areas = get_list_or_404(GeographicalArea.objects.order_by('area'))
+        ctx = {'areas': areas}
+        return ctx
+
+    def get(self, request):
+        return render(request, self.template, self.get_ctx())
+
+    def post(self, request):
+        geographical_area = request.POST.get('geographical_area')
+
+        if not geographical_area:
+            return render(request, self.template, self.get_ctx())
+
+        GeographicalArea.objects.create(area=geographical_area)
+        return render(request, self.template, self.get_ctx())
+
+
 class DiseasesListView(View):
     ''' Page with all disease from DB. '''
 

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Geographical Areas{% endblock %}
+
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token%}
+
+    <div class="mb-3">
+        <label for="geographical_area" class="form-label"><b>Add new one:</b></label>
+        <textarea class="form-control" id="geographical_area" name="geographical_area" rows="2"></textarea>
+    </div>
+
+    <input type="submit" value="Add">
+</form><br><br>
+
+<input id="myInput" type="text" placeholder="search geographical area.."><br><br>
+{% if areas %}
+    <ul id="myList">
+        {% for area in areas %}
+            <li>{{ area.area }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No areas found.</p>
+{% endif %}
+
+{% endblock %}
