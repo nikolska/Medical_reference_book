@@ -5,6 +5,15 @@
 
 {% block content %}
 
-<h1 align="center">It is home page</h1>
+<div align="center">
+    <h1>Hello! </h1><br>
+    <h3>This is the <b>MedicalWebSite</b> allows you to search for diseases by symptoms,
+        affected organs and/or the geographical location of the spread.</h3><br>
+    <h5>If you are doctor and have a valid license you can add to the DataBase new diseases
+        with all important information (affected organs, symptoms etc.).</h5><br>
+    <h5>Please, <a href="{% url 'log_in' %}">log in</a> or
+        <a href="{% url 'registration' %}">register</a> on our <b>MedicalWebSite</b> for more options.</h5><br>
+    <h5>If you have any questions, please, <a href="">contact us</a>!</h5>
+</div>
 
 {% endblock %}
