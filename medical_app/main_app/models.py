@@ -26,6 +26,24 @@ class Symptom(models.Model):
         return self.name
 
 
+class GeographicalArea(models.Model):
+    ''' Geographical Area model. '''
+
+    area = models.TextField()
+
+    def __str__(self):
+        return self.area
+
+
+class Treatment(models.Model):
+    ''' Treatment model. '''
+
+    treatment = models.TextField()
+
+    def __str__(self):
+        return self.treatment
+
+
 class Disease(models.Model):
     ''' Disease model. '''
 
@@ -33,10 +51,8 @@ class Disease(models.Model):
     description = models.TextField()
     symptoms = models.ManyToManyField(Symptom, through='DiseaseSymptom')
     affected_organs = models.ManyToManyField(Organ)
-    geographical_area = models.TextField()
-    treatment = models.TextField()
-    # GeographicalArea model. many to many z Disease
-    # Treatment model many to many z Disease
+    geographical_area = models.ManyToManyField(GeographicalArea)
+    treatment = models.ManyToManyField(Treatment)
 
     def __str__(self):
         return self.name
