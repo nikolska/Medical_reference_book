@@ -115,17 +115,26 @@ class SearchDiseaseView(View):
     def get(self, request):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         organs = get_list_or_404(Organ.objects.order_by('name'))
+        geographical_areas = get_list_or_404(GeographicalArea.objects.order_by('area'))
         ctx = {'symptoms': symptoms,
-               'organs': organs}
+               'organs': organs,
+               'geographical_areas': geographical_areas}
         return render(request, self.template, ctx)
 
     def post(self, request):
         symptoms = request.POST.getlist('symptoms')
         organs = request.POST.getlist('affected_organs')
+        geographical_areas = request.POST.getlist('geographical_areas')
 
         if organs:
             try:
                 diseases = Disease.objects.filter(affected_organs__in=organs).distinct()
+            except:
+                raise Http404
+
+        if geographical_areas:
+            try:
+                diseases = Disease.objects.filter(geographical_area__in=geographical_areas).distinct()
             except:
                 raise Http404
 
@@ -135,7 +144,7 @@ class SearchDiseaseView(View):
             except:
                 raise Http404
 
-        if not organs and not symptoms:
+        if not organs and not symptoms and not geographical_areas:
             diseases = Disease.objects.order_by('name')
 
         ctx = {'diseases': diseases}

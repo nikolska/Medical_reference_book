@@ -48,6 +48,14 @@ $(document).ready(function(){
   });
 });
 
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable td").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
 
 // Add new disease: if input is checked -> check selected option -> save id data object.
 // const inputs = document.querySelectorAll("input.input-symptoms");

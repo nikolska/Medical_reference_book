@@ -6,7 +6,7 @@
 {% block content %}
 
 <h1 align="center">{{ disease.name }}</h1><br>
-<p><b>Description:</b> {{ disease.description }}</p><br>
+<p><b>Description:</b> {{ disease.description|linebreaks }}</p><br>
 <p><b>Affected organs:</b> {{ disease.affected_organs.all|join:", " }}</p>
 <p><table>
     <th>Symptoms</th>

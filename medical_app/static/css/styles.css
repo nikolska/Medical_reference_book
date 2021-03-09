@@ -22,11 +22,6 @@ body {
     text-decoration: none;
 }
 
-.search-disease {
-    display: flex;
-    justify-content: space-around;
-}
-
 table, th, td {
     border-collapse: collapse;
     border: 1px solid black;
@@ -40,5 +35,14 @@ th {
 
 .search-diseases-table td {
     padding: 3px 13px;
-    max-width: 200px;
+    width: 200px;
+    height: 50px;
+    border: 1px solid white;
+}
+
+.search-diseases-table-symptoms td {
+    padding: 5px 13px;
+    width: 1000px;
+    height: 50px;
+    border: 1px solid white;
 }
