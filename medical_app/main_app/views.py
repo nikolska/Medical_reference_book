@@ -1,11 +1,8 @@
-import re
-
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views.generic import View
 
-from .clcrypto import *
 from .models import *
 
 
@@ -38,6 +35,29 @@ class SymptomsListView(View):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         ctx = {'symptoms': symptoms}
         return render(request, self.template, ctx)
+
+
+class TreatmentsListView(View):
+    ''' Page with all treatments from DB. '''
+
+    template = 'treatments_list.html'
+
+    def get_ctx(self):
+        treatments = get_list_or_404(Treatment.objects.order_by('treatment'))
+        ctx = {'treatments': treatments}
+        return ctx
+
+    def get(self, request):
+        return render(request, self.template, self.get_ctx())
+
+    def post(self, request):
+        treatment = request.POST.get('new_treatment')
+
+        if not treatment:
+            return render(request, self.template, self.get_ctx())
+
+        Treatment.objects.create(treatment=treatment)
+        return render(request, self.template, self.get_ctx())
 
 
 class DiseasesListView(View):

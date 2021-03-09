@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Treatments{% endblock %}
+
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token%}
+
+    <div class="mb-3">
+        <label for="new_treatment" class="form-label"><b>Add new one:</b></label>
+        <textarea class="form-control" id="new_treatment" name="new_treatment" rows="2"></textarea>
+    </div>
+
+    <input type="submit" value="Add">
+</form><br><br>
+
+<input id="myInput" type="text" placeholder="search treatment.."><br><br>
+{% if treatments %}
+    <ul id="myList">
+        {% for treatment in treatments %}
+            <li>{{ treatment.treatment }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No treatments found.</p>
+{% endif %}
+
+{% endblock %}
