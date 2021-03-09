@@ -69,13 +69,31 @@
     </div>
 
     <div class="mb-3">
-        <label for="geographical_area" class="form-label"><b>Geographical area:</b></label>
-        <textarea class="form-control" id="geographical_area" name="geographical_area" rows="2"></textarea>
+        <label class="form-label"><b>Geographical Area:</b></label><br>
+        <input id="myInput3" type="text" placeholder="search geographical area.."><br><br>
+        <ul id="myList3">
+            {% for a in geographical_area %}
+                <li style="list-style:none;">
+                    <input type="checkbox" id="geographical_area" name="geographical_area"
+                       value="{{ a.pk }}">
+                    <label for="geographical_area">{{ a.area }}</label><br>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 
     <div class="mb-3">
-        <label for="treatment" class="form-label"><b>Treatment:</b></label>
-        <textarea class="form-control" id="treatment" name="treatment" rows="5"></textarea>
+        <label class="form-label"><b>Treatment:</b></label><br>
+        <input id="myInput4" type="text" placeholder="search treatment.."><br><br>
+        <ul id="myList4">
+            {% for tr in treatment %}
+                <li style="list-style:none;">
+                    <input type="checkbox" id="treatment" name="treatment"
+                           value="{{ tr.pk }}">
+                    <label for="treatment">{{ tr.treatment }}</label><br>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 
     <input type="submit" id="btn-add-disease" value="Add">

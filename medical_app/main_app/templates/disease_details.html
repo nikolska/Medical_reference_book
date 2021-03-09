@@ -19,7 +19,8 @@
         {% endfor %}
     </table>
 </p><br>
-<p><b>Geographical area:</b> {{ disease.geographical_area }}</p><br>
-<p><b>Treatment:</b> {{ disease.treatment }}</p><br>
+<p><b>Geographical area:</b> {{ disease.geographical_area.all|join:", " }}</p><br>
+<p><b>Treatment:</b> <li>{{ disease.treatment.all|join:"<li> " }}</p><br>
+
 
 {% endblock %}

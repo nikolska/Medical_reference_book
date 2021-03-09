@@ -162,9 +162,13 @@ class AddNewDiseaseView(View):
         organs = get_list_or_404(Organ.objects.order_by('name'))
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         choices = DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES
+        treatment = Treatment.objects.order_by('treatment')
+        geographical_area = GeographicalArea.objects.order_by('area')
         ctx = {'organs': organs,
                'symptoms': symptoms,
-               'symptom_frequency_choices': choices}
+               'symptom_frequency_choices': choices,
+               'treatment': treatment,
+               'geographical_area': geographical_area}
         return ctx
 
     def get(self, request):
