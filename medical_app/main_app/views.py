@@ -1,13 +1,13 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
-from django.views.generic import View
+from django.views import View
 
 from .models import *
 
 
 class HomePageView(View):
-    ''' Start (home) page. '''
+    """ Start (home) page. """
 
     template = 'home_page.html'
 
@@ -16,7 +16,7 @@ class HomePageView(View):
 
 
 class OrgansListView(View):
-    ''' Page with organs list from DB. '''
+    """ Page with organs list from DB. """
 
     template = 'organs_list.html'
 
@@ -27,7 +27,7 @@ class OrgansListView(View):
 
 
 class SymptomsListView(View):
-    ''' Page with all symptoms from DB. '''
+    """ Page with all symptoms from DB. """
 
     template = 'symptoms_list.html'
 
@@ -38,7 +38,7 @@ class SymptomsListView(View):
 
 
 class TreatmentsListView(View):
-    ''' Page with all treatments from DB. '''
+    """ Page with all treatments from DB. """
 
     template = 'treatments_list.html'
 
@@ -61,7 +61,7 @@ class TreatmentsListView(View):
 
 
 class GeographicalAreaListView(View):
-    ''' Page with all geographical areas from DB. '''
+    """ Page with all geographical areas from DB. """
 
     template = 'geographical_areas_list.html'
 
@@ -84,7 +84,7 @@ class GeographicalAreaListView(View):
 
 
 class DiseasesListView(View):
-    ''' Page with all disease from DB. '''
+    """ Page with all disease from DB. """
 
     template = 'diseases_list.html'
 
@@ -95,7 +95,7 @@ class DiseasesListView(View):
 
 
 class DiseaseDetailsView(View):
-    ''' Page with disease's details like description, affected organs, symptoms, treatment. '''
+    """ Page with disease's details like description, affected organs, symptoms, treatment. """
 
     template = 'disease_details.html'
 
@@ -108,7 +108,7 @@ class DiseaseDetailsView(View):
 
 
 class SearchDiseaseView(View):
-    ''' Searching for disease by symptoms and affected organs. '''
+    """ Searching for disease by symptoms and affected organs. """
 
     template = 'search_disease.html'
 
@@ -152,7 +152,7 @@ class SearchDiseaseView(View):
 
 
 class AddNewOrganView(View):
-    ''' Adding new organ to DB. '''
+    """ Adding new organ to DB. """
 
     template = 'add_new_organ.html'
 
@@ -178,7 +178,7 @@ class AddNewOrganView(View):
 
 
 class AddNewSymptomView(View):
-    ''' Adding new symptom to DB. '''
+    """ Adding new symptom to DB. """
 
     template = 'add_new_symptom.html'
 
@@ -206,7 +206,7 @@ class AddNewSymptomView(View):
 
 
 class AddNewDiseaseView(View):
-    ''' Adding new disease to DB. '''
+    """ Adding new disease to DB. """
 
     template = 'add_new_disease.html'
 
@@ -294,7 +294,7 @@ class AddNewDiseaseView(View):
 
 
 class AuthorizationView(View):
-    ''' Authorization page with 2 options: login or register. '''
+    """ Authorization page with 2 options: login or register. """
 
     template = 'authorization.html'
 
@@ -303,12 +303,12 @@ class AuthorizationView(View):
 
 
 class LogInView(View):
-    ''' Login page. '''
+    """ Login page. """
 
     pass
 
 
 class RegistrationView(View):
-    ''' Register page. '''
+    """ Register page. """
 
     pass

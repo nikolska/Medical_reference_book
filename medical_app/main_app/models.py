@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Organ(models.Model):
-    ''' Human organs model. '''
+    """ Human organs model. """
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -17,7 +17,7 @@ class Organ(models.Model):
 
 
 class Symptom(models.Model):
-    ''' Symptoms model. '''
+    """ Symptoms model. """
 
     name = models.CharField(max_length=255)
     affected_organ = models.ForeignKey(Organ, on_delete=models.CASCADE, null=True)
@@ -27,7 +27,7 @@ class Symptom(models.Model):
 
 
 class GeographicalArea(models.Model):
-    ''' Geographical Area model. '''
+    """ Geographical Area model. """
 
     area = models.TextField()
 
@@ -36,7 +36,7 @@ class GeographicalArea(models.Model):
 
 
 class Treatment(models.Model):
-    ''' Treatment model. '''
+    """ Treatment model. """
 
     treatment = models.TextField()
 
@@ -45,7 +45,7 @@ class Treatment(models.Model):
 
 
 class Disease(models.Model):
-    ''' Disease model. '''
+    """ Disease model. """
 
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -59,7 +59,7 @@ class Disease(models.Model):
 
 
 class DiseaseSymptom(models.Model):
-    ''' Disease symptom frequency model. Related with Disease model. '''
+    """ Disease symptom frequency model. Related with Disease model. """
 
     SYMPTOM_FREQUENCY_CHOICES = (
         (0, 'not chosen'),
