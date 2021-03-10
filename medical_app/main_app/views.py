@@ -79,7 +79,11 @@ class GeographicalAreaListView(View):
         if not geographical_area:
             return render(request, self.template, self.get_ctx())
 
-        GeographicalArea.objects.create(area=geographical_area)
+        new_area = GeographicalArea.objects.create(area=geographical_area)
+
+        # if request.FILES.get('image'):
+        #     new_area.image = request.FILES.get('image', None)
+        # new_area.save()
         return render(request, self.template, self.get_ctx())
 
 
