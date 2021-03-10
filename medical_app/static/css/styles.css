@@ -87,3 +87,9 @@ th {
     float: left;
     margin: 10px 10px 10px 0;
 }
+.areas-table td {
+    padding: 20px;
+    width: 1000px;
+    height: 50px;
+    border: 1px solid white;
+}
