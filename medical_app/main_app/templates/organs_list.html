@@ -12,12 +12,25 @@
     <ul id="searchList">
         {% for organ in organs %}
             <li style="list-style:none;" data-name="{{ organ.name }}">
-                <span>&#8226;</span> <b>{{ organ.name }}:</b> {{ organ.description|linebreaks }}<br><br>
+                <span>&#8226;</span> <b>{{ organ.name }}:</b><br>
+                {% if organ.image %}
+                    <a class="image" href="{{ organ.image.url }}">
+                        <img class="img-small img-left" src="{{ organ.image.url }}">
+                    </a>
+                    <div class="lightbox">
+                        <div class="lightbox-cnt">
+                            <img src="" class="lightbox-img">
+                            <button class="lightbox-close"><span>&#10006;</span></button>
+                        </div>
+                    </div>
+                {% endif %}
+                {{ organ.description|linebreaks }}<br><br>
             </li>
         {% endfor %}
     </ul>
 {% else %}
     <p>No organs found.</p>
 {% endif %}
+
 
 {% endblock %}
