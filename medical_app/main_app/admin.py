@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import *
 
@@ -11,8 +12,14 @@ class DiseaseSymptomInline(admin.TabularInline):
 
 class OrganModelAdmin(admin.ModelAdmin):
     """Organ model"""
-    list_display = ('name', )
+    list_display = ('name', 'get_image',)
     search_fields = ('name',)
+    readonly_fields = ('get_image',)
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="150" height="150">')
+
+    get_image.short_description = 'image'
 
 
 class SymptomModelAdmin(admin.ModelAdmin):
@@ -30,8 +37,14 @@ class TreatmentModelAdmin(admin.ModelAdmin):
 
 class GeographicalAreaModelAdmin(admin.ModelAdmin):
     """Geographical area model"""
-    list_display = ('area', )
+    list_display = ('area', 'get_image',)
     search_fields = ('area',)
+    readonly_fields = ('get_image',)
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="150" height="150">')
+
+    get_image.short_description = 'image'
 
 
 class DiseaseModelAdmin(admin.ModelAdmin):
