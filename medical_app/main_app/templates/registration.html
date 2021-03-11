@@ -15,16 +15,28 @@
     {% csrf_token %}
     <div class="input-group">
         <span class="input-group-text">First and last name</span>
-        <input type="text" name="first_name" aria-label="First name" class="form-control">
-        <input type="text" name="last_name" aria-label="Last name" class="form-control">
+        <input type="text" name="first_name" aria-label="First name" class="form-control" required>
+        <input type="text" name="last_name" aria-label="Last name" class="form-control" required>
     </div><br>
     <div class="input-group">
         <span class="input-group-text">Email</span>
-        <input type="email" name="email" class="form-control" aria-label="Email">
+        <input type="email" name="email" class="form-control" aria-label="Email" required>
+    </div><br>
+    <div class="input-group">
+        <span class="input-group-text">Medical license</span>
+        <input type="text" name="license" class="form-control" aria-label="License">
     </div><br>
     <div class="input-group">
         <span class="input-group-text">Password</span>
-        <input type="password" name="password" class="form-control" aria-label="Password">
+        <input type="password" name="password" class="form-control" aria-label="Password" required>
+    </div>
+    <div id="passwordHelpBlock" class="form-text">
+        Your password must be 8-20 characters long, contain letters and numbers,
+        and must not contain spaces, special characters, or emoji.
+    </div><br>
+    <div class="input-group">
+        <span class="input-group-text">Repeat Your Password</span>
+        <input type="password" name="password_repeat" class="form-control" aria-label="Repeat Password" required>
     </div>
     <div id="passwordHelpBlock" class="form-text">
         Your password must be 8-20 characters long, contain letters and numbers,

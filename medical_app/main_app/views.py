@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views import View
@@ -317,4 +317,54 @@ class LogInView(View):
 class RegistrationView(View):
     """ Register page. """
 
-    pass
+    template = 'registration.html'
+
+    def get(self, request):
+        return render(request, self.template)
+
+    def post(self, request):
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_repeat = request.POST.get('password_repeat')
+        medical_license = request.POST.get('license')
+
+        if not first_name:
+            ctx = {'message': 'First name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if len(first_name) > 255:
+            ctx = {'message': 'First name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        if not last_name:
+            ctx = {'message': 'Last name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if len(last_name) > 255:
+            ctx = {'message': 'Last name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        if not email:
+            ctx = {'message': 'Email cannot be empty!'}
+            return render(request, self.template, ctx)
+
+        if not password:
+            ctx = {'message': 'Password cannot be empty!'}
+            return render(request, self.template, ctx)
+        if not password_repeat:
+            ctx = {'message': 'Repeat your password, please!'}
+            return render(request, self.template, ctx)
+        if password != password_repeat:
+            ctx = {'message': 'Passwords are different!'}
+            return render(request, self.template, ctx)
+
+        # new_user = User.objects.create()
+        # new_user.first_name = first_name
+        # new_user.last_name = last_name
+        # new_user.email = email
+        # new_user.password = password
+        # new_user.medical_license = medical_license
+        # new_user.save()
+
+        return HttpResponseRedirect(reverse('home_page'))
+

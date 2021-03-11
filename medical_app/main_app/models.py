@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
-# Zrobić 2 grupy użytkowników: Lekarz i Pacient.
 
 
 class Organ(models.Model):
