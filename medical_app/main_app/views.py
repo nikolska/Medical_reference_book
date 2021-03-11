@@ -75,15 +75,19 @@ class GeographicalAreaListView(View):
 
     def post(self, request):
         geographical_area = request.POST.get('geographical_area')
+        image = request.FILES.get('image')
 
         if not geographical_area:
             return render(request, self.template, self.get_ctx())
 
-        new_area = GeographicalArea.objects.create(area=geographical_area)
+        if not image:
+            return render(request, self.template, self.get_ctx())
 
-        # if request.FILES.get('image'):
-        #     new_area.image = request.FILES.get('image', None)
-        # new_area.save()
+        GeographicalArea.objects.create(
+            area=geographical_area,
+            image=image
+        )
+
         return render(request, self.template, self.get_ctx())
 
 

@@ -83,6 +83,19 @@ lightboxCtn.addEventListener('click', e => {
     e.stopPropagation();
 });
 
+function previewFile(input) {
+    const imageFile = $("input[type=file]").get(0).files[0];
+    if (imageFile) {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        $("#previewImg").attr("src", reader.result);
+      };
+
+      reader.readAsDataURL(imageFile);
+    }
+}
+
 // Add new disease: if input is checked -> check selected option -> save id data object.
 // const inputs = document.querySelectorAll("input.input-symptoms");
 // const select_list = document.querySelectorAll("select.select-frequency");
