@@ -311,7 +311,10 @@ class AuthorizationView(View):
 class LogInView(View):
     """ Login page. """
 
-    pass
+    template = 'log_in.html'
+
+    def get(self, request):
+        return render(request, self.template)
 
 
 class RegistrationView(View):
