@@ -14,26 +14,51 @@
 
     <div class="mb-3">
         <label for="name" class="form-label"><b>Disease:</b></label>
-        <input type="text" maxlength="255" class="form-control" id="name" name="name">
+        <input type="text" maxlength="255" class="form-control" id="name" name="name" required>
     </div>
 
     <div class="mb-3">
         <label for="description" class="form-label"><b>Description:</b></label>
-        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Geographical Area:</b></label><br>
+        {% if geographical_areas %}
+            <table class="search-diseases-table">
+                {% for area in geographical_areas %}
+                    {% if forloop.counter0|divisibleby:6 %}
+                        <tr>
+                    {% endif %}
+                        <td>
+                            <input type="checkbox" id="geographical_areas" name="geographical_areas" value="{{ area.pk }}">
+                            <label for="geographical_areas">{{ area.area }}</label><br>
+                        </td>
+                    {% if forloop.counter|divisibleby:6 %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% endif %}
     </div>
 
     <div class="mb-3">
         <label class="form-label"><b>Affected organs:</b></label><br>
-        <input id="myInput" type="text" placeholder="search organ.."><br><br>
             {% if organs %}
-                <ul id="myList">
+                <table class="search-diseases-table">
                     {% for organ in organs %}
-                        <li style="list-style:none;">
-                            <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
-                            <label for="affected_organs">{{ organ.name }}</label>
-                        </li>
+                        {% if forloop.counter0|divisibleby:6 %}
+                            <tr>
+                        {% endif %}
+                            <td>
+                                <input type="checkbox" id="affected_organs" name="affected_organs" value="{{ organ.pk }}">
+                                <label for="affected_organs">{{ organ.name }}</label><br>
+                            </td>
+                        {% if forloop.counter|divisibleby:6 %}
+                            </tr>
+                        {% endif %}
                     {% endfor %}
-                </ul>
+                </table>
             {% else %}
                 <p>No organs found.</p>
             {% endif %}
@@ -49,16 +74,11 @@
                         <input type="checkbox" class="input-symptoms" id="symptoms" name="symptoms" value="{{ symptom.pk }}">
                         <label for="symptoms">{{ symptom.name }}</label>
                         (<i>frequency:</i>
-                        <select class="select-frequency" name="symptom_frequency" id="select-frequency">
-                            {% for symptom_frequency in symptom_frequency_choices %}
-                                <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>
-                            {% endfor %}
-                        </select>
-<!--                            {% for symptom_frequency in symptom_frequency_choices %}-->
-<!--                                <input type="checkbox" id="symptom_frequency" name="symptom_frequency"-->
-<!--                                       value="{{ symptom_frequency.0 }}">-->
-<!--                                <label for="symptom_frequency">{{ symptom_frequency.1 }}</label>-->
-<!--                            {% endfor %}-->
+                            <select class="select-frequency" name="symptom_frequency" id="select-frequency">
+                                {% for symptom_frequency in symptom_frequency_choices %}
+                                    <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>
+                                {% endfor %}
+                            </select>
                         )<br>
                     </li>
                 {% endfor %}
@@ -66,20 +86,6 @@
         {% else %}
             <p>No symptoms found.</p>
         {% endif %}
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label"><b>Geographical Area:</b></label><br>
-        <input id="myInput3" type="text" placeholder="search geographical area.."><br><br>
-        <ul id="myList3">
-            {% for a in geographical_area %}
-                <li style="list-style:none;">
-                    <input type="checkbox" id="geographical_area" name="geographical_area"
-                       value="{{ a.pk }}">
-                    <label for="geographical_area">{{ a.area }}</label><br>
-                </li>
-            {% endfor %}
-        </ul>
     </div>
 
     <div class="mb-3">

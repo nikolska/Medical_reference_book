@@ -106,13 +106,12 @@ function previewFile(input) {
 //     if (inputs[i].checked) {
 //       const data = `"symptom": "${inputs[i].value}","frequency": "${select_list[i].value}"`;
 //       results.push(data);
+//       console.log(data);
 //     }
 //   }
 // }
 //
-// checkingSelect();
-// const json = { ...results };
-//
+// const obj = checkingSelect();
 // $.ajax(
 //     {
 //         url:'http://127.0.0.1:8000/diseases/add/',

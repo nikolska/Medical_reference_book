@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.views import View
@@ -219,12 +219,12 @@ class AddNewDiseaseView(View):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
         choices = DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES
         treatment = Treatment.objects.order_by('treatment')
-        geographical_area = GeographicalArea.objects.order_by('area')
+        geographical_areas = GeographicalArea.objects.order_by('area')
         ctx = {'organs': organs,
                'symptoms': symptoms,
                'symptom_frequency_choices': choices,
                'treatment': treatment,
-               'geographical_area': geographical_area}
+               'geographical_areas': geographical_areas}
         return ctx
 
     def get(self, request):
@@ -236,11 +236,12 @@ class AddNewDiseaseView(View):
         ctx = self.get_ctx()
         name = request.POST.get('name')
         description = request.POST.get('description')
-        geographical_area = request.POST.get('geographical_area')
-        treatment = request.POST.get('treatment')
+        geographical_area = request.POST.getlist('geographical_areas')
+        treatment = request.POST.getlist('treatment')
         affected_organs = request.POST.getlist('affected_organs')
         symptoms = request.POST.getlist('symptoms')
         symptom_frequency = request.POST.getlist('symptom_frequency')
+        symptom_frequency = [i for i in symptom_frequency if i != '0']
 
         if not name:
             ctx['message'] = 'Name cannot be empty!'
@@ -270,7 +271,8 @@ class AddNewDiseaseView(View):
             return render(request, self.template, ctx)
 
         if not symptom_frequency:
-            symptom_frequency = [0 for _ in range(len(symptoms))]
+            ctx['message'] = "Choose symptom's frequency!"
+            return render(request, self.template, ctx)
 
         if len(symptom_frequency) != len(symptoms):
             ctx['message'] = "Choose symptoms with correct symptom's frequency!"
@@ -278,11 +280,11 @@ class AddNewDiseaseView(View):
 
         disease = Disease.objects.create(
             name=name,
-            description=description,
-            geographical_area=geographical_area,
-            treatment=treatment
+            description=description
         )
 
+        disease.geographical_area.set(geographical_area)
+        disease.treatment.set(treatment)
         disease.affected_organs.set(affected_organs)
 
         for i in range(0, len(symptoms)):
