@@ -35,6 +35,5 @@ urlpatterns = [
     path('organs/add/', AddNewOrganView.as_view(), name='add_organ'),
     path('registration/', RegistrationView.as_view(), name='registration'),
     path('symptoms/', SymptomsListView.as_view(), name='symptoms_list'),
-    path('symptoms/add/', AddNewSymptomView.as_view(), name='add_symptom'),
     path('treatments/', TreatmentsListView.as_view(), name='treatments_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

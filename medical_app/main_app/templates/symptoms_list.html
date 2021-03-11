@@ -5,8 +5,24 @@
 
 {% block content %}
 
-<button type="button" class="btn btn-outline-light"><a href="{% url 'add_symptom' %}">Add new symptom</a></button>
-<br><br>
+<form action="" method="POST">
+    {% csrf_token%}
+
+    <div class="mb-3">
+        <label for="name" class="form-label"><b>Symptom:</b></label>
+        <input type="text" maxlength="255" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label"><b>Affected organ:</b></label>
+        <select  size="1" class="form-select" name="affected_organ">
+            {% for organ in organs %}
+                <option value="{{ organ.pk }}">{{ organ.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <input type="submit" value="Add">
+</form><br><br>
+
 <input id="searchInput" type="text" placeholder="search symptom.."><br><br>
 {% if symptoms %}
     <ul id="searchList">

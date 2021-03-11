@@ -6,19 +6,25 @@
 {% block content %}
 
 {% if message %}
-<h3 style="color: red" align="center">{{ message }}</h3>
+    <h3 style="color: red" align="center">{{ message }}</h3>
 {% endif %}
 
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
+    {{ form.as_p }}
 
     <div class="mb-3">
         <label for="name" class="form-label"><b>Organ:</b></label>
-        <input type="text" maxlength="255" class="form-control" id="name" name="name">
+        <input type="text" maxlength="255" class="form-control" id="name" name="name" required>
     </div>
     <div class="mb-3">
         <label for="description" class="form-label"><b>Description:</b></label>
-        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="image-area"><b>Image:</b> </label><br>
+        <input type="file" id="image-area" name="image" onchange="previewFile(this);" required>
+        <img class="img-small" id="previewImg" src="">
     </div>
     <input type="submit" value="Add">
 </form>

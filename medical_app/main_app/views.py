@@ -33,8 +33,27 @@ class SymptomsListView(View):
 
     def get(self, request):
         symptoms = get_list_or_404(Symptom.objects.order_by('name'))
-        ctx = {'symptoms': symptoms}
+        organs = get_list_or_404(Organ.objects.order_by('name'))
+        ctx = {'symptoms': symptoms,
+               'organs': organs}
         return render(request, self.template, ctx)
+
+    def post(self, request):
+        name = request.POST.get('name')
+        affected_organ = request.POST.get('affected_organ')
+
+        if not name:
+            ctx = {'message': 'Name cannot be empty!'}
+            return render(request, self.template, ctx)
+        if len(name) > 255:
+            ctx = {'message': 'Name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+
+        Symptom.objects.create(
+            name=name,
+            affected_organ=Organ.objects.get(pk=affected_organ)
+        )
+        return HttpResponseRedirect(reverse('symptoms_list'))
 
 
 class TreatmentsListView(View):
@@ -170,47 +189,24 @@ class AddNewOrganView(View):
     def post(self, request):
         name = request.POST.get('name')
         description = request.POST.get('description')
+        image = request.FILES.get('image')
 
         if not name:
             ctx = {'message': 'Name cannot be empty!'}
             return render(request, self.template, ctx)
         if len(name) > 255:
             ctx = {'message': 'Name cannot be longer than 255 characters!'}
+            return render(request, self.template, ctx)
+        if not image:
+            ctx = {'message': 'You have to choose a image for new organ!'}
             return render(request, self.template, ctx)
 
         Organ.objects.create(
             name=name,
-            description=description
+            description=description,
+            image=image
         )
         return HttpResponseRedirect(reverse('organs_list'))
-
-
-class AddNewSymptomView(View):
-    """ Adding new symptom to DB. """
-
-    template = 'add_new_symptom.html'
-
-    def get(self, request):
-        organs = get_list_or_404(Organ.objects.order_by('name'))
-        ctx = {'organs': organs}
-        return render(request, self.template, ctx)
-
-    def post(self, request):
-        name = request.POST.get('name')
-        affected_organ = request.POST.get('affected_organ')
-
-        if not name:
-            ctx = {'message': 'Name cannot be empty!'}
-            return render(request, self.template, ctx)
-        if len(name) > 255:
-            ctx = {'message': 'Name cannot be longer than 255 characters!'}
-            return render(request, self.template, ctx)
-
-        Symptom.objects.create(
-            name=name,
-            affected_organ=Organ.objects.get(pk=affected_organ)
-        )
-        return HttpResponseRedirect(reverse('symptoms_list'))
 
 
 class AddNewDiseaseView(View):

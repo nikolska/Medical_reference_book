@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<form id="form-add-area" action="" method="POST" enctype="multipart/form-data">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
     {{ form.as_p }}
 
@@ -16,10 +16,10 @@
     <div class="mb-3">
         <label for="image-area"><b>Image:</b> </label>
         <input type="file" id="image-area" name="image" onchange="previewFile(this);" required><br>
-        <img class="img-small" id="previewImg" src="" alt="Placeholder">
+        <img class="img-small" id="previewImg" src="">
     </div>
 
-    <input type="submit" id="submit-area" value="Add">
+    <input type="submit" value="Add">
 </form><br><br>
 
 <input id="myInput" type="text" placeholder="search geographical area.."><br><br>
