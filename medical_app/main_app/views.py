@@ -361,13 +361,12 @@ class RegistrationView(View):
             ctx = {'message': 'Passwords are different!'}
             return render(request, self.template, ctx)
 
-        # new_user = User.objects.create()
-        # new_user.first_name = first_name
-        # new_user.last_name = last_name
-        # new_user.email = email
-        # new_user.password = password
-        # new_user.medical_license = medical_license
-        # new_user.save()
+        # new_user = User.objects.create_user(
+        #     first_name=first_name,
+        #     last_name=last_name,
+        #     email=email,
+        #     password=password,
+        #     medical_license=medical_license
+        # )
 
         return HttpResponseRedirect(reverse('home_page'))
-

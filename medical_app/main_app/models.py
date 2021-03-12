@@ -1,8 +1,20 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 
-
-User = get_user_model()
+# from django.contrib.auth import get_user_model
+# from django.contrib.auth.models import User
+#
+# User = get_user_model()
+#
+#
+# class Doctor(models.Model):
+#     """User model who have a valid medical license and can change data at the DB. """
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     medical_license = models.CharField(max_length=255)
+#
+#
+# class Patient(models.Model):
+#     """User model who don't have a valid medical license and can only view data from the DB. """
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Organ(models.Model):
