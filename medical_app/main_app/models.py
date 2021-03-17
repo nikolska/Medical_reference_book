@@ -1,20 +1,5 @@
 from django.db import models
-
-# from django.contrib.auth import get_user_model
-# from django.contrib.auth.models import User
-#
-# User = get_user_model()
-#
-#
-# class Doctor(models.Model):
-#     """User model who have a valid medical license and can change data at the DB. """
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     medical_license = models.CharField(max_length=255)
-#
-#
-# class Patient(models.Model):
-#     """User model who don't have a valid medical license and can only view data from the DB. """
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+from django.urls import reverse
 
 
 class Organ(models.Model):
@@ -27,6 +12,9 @@ class Organ(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class Symptom(models.Model):
     """ Symptoms model. """
@@ -36,6 +24,9 @@ class Symptom(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class GeographicalArea(models.Model):
@@ -47,6 +38,9 @@ class GeographicalArea(models.Model):
     def __str__(self):
         return self.area
 
+    class Meta:
+        ordering = ['area']
+
 
 class Treatment(models.Model):
     """ Treatment model. """
@@ -55,6 +49,9 @@ class Treatment(models.Model):
 
     def __str__(self):
         return self.treatment
+
+    class Meta:
+        ordering = ['treatment']
 
 
 class Disease(models.Model):
@@ -69,6 +66,12 @@ class Disease(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('disease_details', args=[str(self.pk)])
+
+    class Meta:
+        ordering = ['name']
 
 
 class DiseaseSymptom(models.Model):
@@ -89,3 +92,6 @@ class DiseaseSymptom(models.Model):
 
     def __str__(self):
         return f'{self.disease} / {self.symptom}'
+
+    class Meta:
+        ordering = ['disease']

@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import View, ListView, CreateView
+from django.views.generic import CreateView, DetailView, ListView, View
 
 from .forms import TreatmentsCreateForm
 from .models import *
@@ -22,9 +22,6 @@ class OrgansListView(ListView):
     model = Organ
     context_object_name = 'organs'
     template_name = 'organs_list.html'
-
-    def get_queryset(self):
-        return Organ.objects.order_by('name')
 
 
 class SymptomsListView(View):
@@ -67,9 +64,6 @@ class TreatmentsListView(CreateView, ListView):
     context_object_name = 'treatments'
     success_url = reverse_lazy('treatments_list')
 
-    def get_queryset(self):
-        return Treatment.objects.order_by('treatment')
-
 
 class GeographicalAreaListView(View):
     """ Page with all geographical areas from DB. """
@@ -109,21 +103,19 @@ class DiseasesListView(ListView):
     context_object_name = 'diseases'
     template_name = 'diseases_list.html'
 
-    def get_queryset(self):
-        return Disease.objects.order_by('name')
 
-
-class DiseaseDetailsView(View):
+class DiseaseDetailsView(DetailView):
     """ Page with disease's details like description, affected organs, symptoms, treatment. """
 
-    template = 'disease_details.html'
+    model = Disease
+    template_name = 'disease_details.html'
 
-    def get(self, request, **kwargs):
-        disease = get_object_or_404(Disease, pk=kwargs['disease_pk'])
+    def get_context_data(self, **kwargs):
+        disease = get_object_or_404(Disease, pk=self.kwargs['pk'])
         symptoms_details = DiseaseSymptom.objects.filter(disease=disease).order_by('-symptom_frequency')
-        ctx = {'disease': disease,
-               'symptoms_details': symptoms_details}
-        return render(request, self.template, ctx)
+        ctx = super().get_context_data(**kwargs)
+        ctx["symptoms_details"] = symptoms_details
+        return ctx
 
 
 class SearchDiseaseView(View):
