@@ -102,15 +102,15 @@ class GeographicalAreaListView(View):
         return render(request, self.template, self.get_ctx())
 
 
-class DiseasesListView(View):
+class DiseasesListView(ListView):
     """ Page with all disease from DB. """
 
-    template = 'diseases_list.html'
+    model = Disease
+    context_object_name = 'diseases'
+    template_name = 'diseases_list.html'
 
-    def get(self, request):
-        diseases = get_list_or_404(Disease.objects.order_by('name'))
-        ctx = {'diseases': diseases}
-        return render(request, self.template, ctx)
+    def get_queryset(self):
+        return Disease.objects.order_by('name')
 
 
 class DiseaseDetailsView(View):
