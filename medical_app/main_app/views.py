@@ -16,15 +16,15 @@ class HomePageView(View):
         return render(request, self.template)
 
 
-class OrgansListView(View):
+class OrgansListView(ListView):
     """ Page with organs list from DB. """
 
-    template = 'organs_list.html'
+    model = Organ
+    context_object_name = 'organs'
+    template_name = 'organs_list.html'
 
-    def get(self, request):
-        organs = get_list_or_404(Organ.objects.order_by('name'))
-        ctx = {'organs': organs}
-        return render(request, self.template, ctx)
+    def get_queryset(self):
+        return Organ.objects.order_by('name')
 
 
 class SymptomsListView(View):
