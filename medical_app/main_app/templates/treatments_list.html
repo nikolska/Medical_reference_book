@@ -9,8 +9,8 @@
     {% csrf_token%}
 
     <div class="mb-3">
-        <label for="new_treatment" class="form-label"><b>Add new one:</b></label>
-        <textarea class="form-control" id="new_treatment" name="new_treatment" rows="2" required></textarea>
+        <br><label for="{{ form.treatment.id_for_label }}"><b>Add new one:</b></label><br>
+        {{ form.treatment }}
     </div>
 
     <input type="submit" value="Add">

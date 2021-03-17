@@ -1,8 +1,9 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.urls import reverse
-from django.views import View
+from django.urls import reverse, reverse_lazy
+from django.views.generic import View, ListView, CreateView
 
+from .forms import TreatmentsCreateForm
 from .models import *
 
 
@@ -56,27 +57,18 @@ class SymptomsListView(View):
         return HttpResponseRedirect(reverse('symptoms_list'))
 
 
-class TreatmentsListView(View):
+class TreatmentsListView(CreateView, ListView):
     """ Page with all treatments from DB. """
 
-    template = 'treatments_list.html'
+    model = Treatment
+    object_list = Treatment.objects.order_by('treatment')
+    form_class = TreatmentsCreateForm
+    template_name = 'treatments_list.html'
+    context_object_name = 'treatments'
+    success_url = reverse_lazy('treatments_list')
 
-    def get_ctx(self):
-        treatments = get_list_or_404(Treatment.objects.order_by('treatment'))
-        ctx = {'treatments': treatments}
-        return ctx
-
-    def get(self, request):
-        return render(request, self.template, self.get_ctx())
-
-    def post(self, request):
-        treatment = request.POST.get('new_treatment')
-
-        if not treatment:
-            return render(request, self.template, self.get_ctx())
-
-        Treatment.objects.create(treatment=treatment)
-        return render(request, self.template, self.get_ctx())
+    def get_queryset(self):
+        return Treatment.objects.order_by('treatment')
 
 
 class GeographicalAreaListView(View):
@@ -180,7 +172,10 @@ class SearchDiseaseView(View):
 
 class AddNewOrganView(View):
     """ Adding new organ to DB. """
-
+    # model = Organ
+    # template_name = 'add_new_organ.html'
+    # form_class = OrganCreateForm
+    # success_url = reverse_lazy('organs_list')
     template = 'add_new_organ.html'
 
     def get(self, request):

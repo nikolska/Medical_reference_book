@@ -11,7 +11,22 @@
 
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
-    {{ form.as_p }}
+
+<!--    <div class="mb-3">-->
+<!--    <label for="{{ form.name.id_for_label }}">Organ:</label><br>-->
+<!--    {{ form.name }}-->
+<!--    </div>-->
+
+<!--    <div class="mb-3">-->
+<!--    <br><label for="{{ form.description.id_for_label }}">Description:</label><br>-->
+<!--    {{ form.description }}-->
+<!--    </div>-->
+
+<!--    <div class="mb-3">-->
+<!--    <br><label for="{{ form.image.id_for_label }}">Image:</label>-->
+<!--    {{ form.image }}-->
+<!--    <img class="img-small" id="previewImg" src="">-->
+<!--    </div>-->
 
     <div class="mb-3">
         <label for="name" class="form-label"><b>Organ:</b></label>
