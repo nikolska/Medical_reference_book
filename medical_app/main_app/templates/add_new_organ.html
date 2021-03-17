@@ -5,42 +5,25 @@
 
 {% block content %}
 
-{% if message %}
-    <h3 style="color: red" align="center">{{ message }}</h3>
-{% endif %}
-
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
 
-<!--    <div class="mb-3">-->
-<!--    <label for="{{ form.name.id_for_label }}">Organ:</label><br>-->
-<!--    {{ form.name }}-->
-<!--    </div>-->
-
-<!--    <div class="mb-3">-->
-<!--    <br><label for="{{ form.description.id_for_label }}">Description:</label><br>-->
-<!--    {{ form.description }}-->
-<!--    </div>-->
-
-<!--    <div class="mb-3">-->
-<!--    <br><label for="{{ form.image.id_for_label }}">Image:</label>-->
-<!--    {{ form.image }}-->
-<!--    <img class="img-small" id="previewImg" src="">-->
-<!--    </div>-->
-
     <div class="mb-3">
-        <label for="name" class="form-label"><b>Organ:</b></label>
-        <input type="text" maxlength="255" class="form-control" id="name" name="name" required>
+        <label for="{{ form.name.id_for_label }}"><b>Organ:</b></label><br>
+        {{ form.name }}
     </div>
+
     <div class="mb-3">
-        <label for="description" class="form-label"><b>Description:</b></label>
-        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+        <br><label for="{{ form.description.id_for_label }}"><b>Description:</b></label><br>
+        {{ form.description }}
     </div>
+
     <div class="mb-3">
-        <label for="image-area"><b>Image:</b> </label><br>
-        <input type="file" id="image-area" name="image" onchange="previewFile(this);" required>
+        <br><label for="{{ form.image.id_for_label }}"><b>Image:</b></label>
+        {{ form.image }}
         <img class="img-small" id="previewImg" src="">
-    </div>
+    </div><br>
+
     <input type="submit" value="Add">
 </form>
 

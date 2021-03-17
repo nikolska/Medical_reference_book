@@ -18,7 +18,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, re_path
 
-from main_app.views import *
+from main_app.views import (
+    AddNewDiseaseView, AddNewOrganView, AuthorizationView,
+    DiseaseDetailsView, DiseasesListView, GeographicalAreaListView,
+    HomePageView, LogInView, OrgansListView, RegistrationView,
+    SearchDiseaseView, SymptomsListView, TreatmentsListView
+)
 
 
 urlpatterns = [

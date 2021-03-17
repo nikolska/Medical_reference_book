@@ -6,8 +6,8 @@ class Organ(models.Model):
     """ Human organs model. """
 
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    image = models.ImageField(default=True, upload_to='media/organs/')
+    description = models.TextField()
+    image = models.ImageField(upload_to='media/organs/')
 
     def __str__(self):
         return self.name

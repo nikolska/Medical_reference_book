@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, View
 
-from .forms import GeographicalAreaCreateForm, TreatmentsCreateForm
-from .models import *
+from .forms import GeographicalAreaCreateForm, OrganCreateForm, TreatmentsCreateForm
+from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
 
 
 class HomePageView(View):
@@ -142,38 +142,12 @@ class SearchDiseaseView(View):
         return render(request, 'diseases_list.html', ctx)
 
 
-class AddNewOrganView(View):
+class AddNewOrganView(CreateView):
     """ Adding new organ to DB. """
-    # model = Organ
-    # template_name = 'add_new_organ.html'
-    # form_class = OrganCreateForm
-    # success_url = reverse_lazy('organs_list')
-    template = 'add_new_organ.html'
-
-    def get(self, request):
-        return render(request, self.template)
-
-    def post(self, request):
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        image = request.FILES.get('image')
-
-        if not name:
-            ctx = {'message': 'Name cannot be empty!'}
-            return render(request, self.template, ctx)
-        if len(name) > 255:
-            ctx = {'message': 'Name cannot be longer than 255 characters!'}
-            return render(request, self.template, ctx)
-        if not image:
-            ctx = {'message': 'You have to choose a image for new organ!'}
-            return render(request, self.template, ctx)
-
-        Organ.objects.create(
-            name=name,
-            description=description,
-            image=image
-        )
-        return HttpResponseRedirect(reverse('organs_list'))
+    model = Organ
+    template_name = 'add_new_organ.html'
+    form_class = OrganCreateForm
+    success_url = reverse_lazy('organs_list')
 
 
 class AddNewDiseaseView(View):

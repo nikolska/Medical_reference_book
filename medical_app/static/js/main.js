@@ -85,7 +85,7 @@ lightboxCtn.addEventListener('click', e => {
 
 
 $(document).ready(function(){
-  $("#id_image").on("change", function() {
+  $("input#id_image").on("change", function() {
     const imageFile = $("input[type=file]").get(0).files[0];
 
     if (imageFile) {
