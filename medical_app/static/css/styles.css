@@ -93,3 +93,7 @@ th {
     height: 50px;
     border: 1px solid white;
 }
+.symptoms-view {
+    display: flex;
+    justify-content: space-around;
+}

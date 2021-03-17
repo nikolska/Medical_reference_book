@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import GeographicalArea, Organ, Treatment
+from .models import GeographicalArea, Organ, Symptom, Treatment
 
 
 class GeographicalAreaCreateForm(forms.ModelForm):
@@ -10,7 +10,7 @@ class GeographicalAreaCreateForm(forms.ModelForm):
         model = GeographicalArea
         fields = ['area', 'image']
         widgets = {
-            'area': forms.Textarea(attrs={'cols': 140, 'rows': 2})
+            'area': forms.Textarea(attrs={'cols': 140, 'rows': 2, 'placeholder': 'New Geographical Area'})
         }
 
 
@@ -27,6 +27,18 @@ class OrganCreateForm(forms.ModelForm):
         }
 
 
+class SymptomCreateForm(forms.ModelForm):
+    """Create new symptom form"""
+
+    class Meta:
+        """Meta class"""
+        model = Symptom
+        fields = ['name', 'affected_organ']
+        widgets = {
+            'name': forms.Textarea(attrs={'cols': 30, 'rows': 2, 'max_length': 255})
+        }
+
+
 class TreatmentsCreateForm(forms.ModelForm):
     """Create new treatment form"""
     class Meta:
@@ -34,6 +46,6 @@ class TreatmentsCreateForm(forms.ModelForm):
         model = Treatment
         fields = ['treatment']
         widgets = {
-            'treatment': forms.Textarea(attrs={'cols': 140, 'rows': 2})
+            'treatment': forms.Textarea(attrs={'cols': 140, 'rows': 2, 'placeholder': 'New Treatment'})
         }
 

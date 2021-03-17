@@ -5,35 +5,40 @@
 
 {% block content %}
 
-<form action="" method="POST">
-    {% csrf_token%}
-
-    <div class="mb-3">
-        <label for="name" class="form-label"><b>Symptom:</b></label>
-        <input type="text" maxlength="255" class="form-control" id="name" name="name" required>
+<div class="symptoms-view">
+    <div>
+        <p align="center"><input id="searchInput" type="text" placeholder="search symptom.."></p>
+        {% if symptoms %}
+            <ul id="searchList">
+                {% for symptom in symptoms %}
+                    <li style="list-style:none;" data-name="{{ symptom.name }}">
+                        <span>&#8226;</span> <b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})<br><br>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No symptoms found.</p>
+        {% endif %}
     </div>
-    <div class="mb-3">
-        <label class="form-label"><b>Affected organ:</b></label>
-        <select  size="1" class="form-select" name="affected_organ">
-            {% for organ in organs %}
-                <option value="{{ organ.pk }}">{{ organ.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <input type="submit" value="Add">
-</form><br><br>
 
-<input id="searchInput" type="text" placeholder="search symptom.."><br><br>
-{% if symptoms %}
-    <ul id="searchList">
-        {% for symptom in symptoms %}
-            <li style="list-style:none;" data-name="{{ symptom.name }}">
-                <span>&#8226;</span> <b>{{ symptom.name }}</b> (affected organ: {{ symptom.affected_organ }})<br><br>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No symptoms found.</p>
-{% endif %}
+    <div align="center">
+        <h4>Add new symptom</h4><br>
+        <form action="" method="POST">
+            {% csrf_token%}
+
+            <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}"><b>Symptom:</b></label><br>
+                {{ form.name }}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.affected_organ.id_for_label }}"><b>Affected organ:</b></label><br>
+                {{ form.affected_organ }}
+            </div>
+
+            <input type="submit" value="Add">
+        </form>
+    </div>
+</div>
 
 {% endblock %}

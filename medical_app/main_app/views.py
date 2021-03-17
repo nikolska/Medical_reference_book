@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, View
 
-from .forms import GeographicalAreaCreateForm, OrganCreateForm, TreatmentsCreateForm
+from .forms import GeographicalAreaCreateForm, OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
 
 
@@ -24,34 +24,15 @@ class OrgansListView(ListView):
     template_name = 'organs_list.html'
 
 
-class SymptomsListView(View):
+class SymptomsListView(CreateView, ListView):
     """ Page with all symptoms from DB. """
 
-    template = 'symptoms_list.html'
-
-    def get(self, request):
-        symptoms = get_list_or_404(Symptom.objects.order_by('name'))
-        organs = get_list_or_404(Organ.objects.order_by('name'))
-        ctx = {'symptoms': symptoms,
-               'organs': organs}
-        return render(request, self.template, ctx)
-
-    def post(self, request):
-        name = request.POST.get('name')
-        affected_organ = request.POST.get('affected_organ')
-
-        if not name:
-            ctx = {'message': 'Name cannot be empty!'}
-            return render(request, self.template, ctx)
-        if len(name) > 255:
-            ctx = {'message': 'Name cannot be longer than 255 characters!'}
-            return render(request, self.template, ctx)
-
-        Symptom.objects.create(
-            name=name,
-            affected_organ=Organ.objects.get(pk=affected_organ)
-        )
-        return HttpResponseRedirect(reverse('symptoms_list'))
+    model = Symptom
+    object_list = Symptom.objects.all()
+    form_class = SymptomCreateForm
+    template_name = 'symptoms_list.html'
+    context_object_name = 'symptoms'
+    success_url = reverse_lazy('symptoms_list')
 
 
 class TreatmentsListView(CreateView, ListView):
