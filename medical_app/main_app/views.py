@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, View
 
-from .forms import TreatmentsCreateForm
+from .forms import GeographicalAreaCreateForm, TreatmentsCreateForm
 from .models import *
 
 
@@ -58,42 +58,47 @@ class TreatmentsListView(CreateView, ListView):
     """ Page with all treatments from DB. """
 
     model = Treatment
-    object_list = Treatment.objects.order_by('treatment')
+    object_list = Treatment.objects.all()
     form_class = TreatmentsCreateForm
     template_name = 'treatments_list.html'
     context_object_name = 'treatments'
     success_url = reverse_lazy('treatments_list')
 
 
-class GeographicalAreaListView(View):
+class GeographicalAreaListView(CreateView, ListView):
     """ Page with all geographical areas from DB. """
 
-    template = 'geographical_areas_list.html'
+    model = GeographicalArea
+    object_list = GeographicalArea.objects.all()
+    form_class = GeographicalAreaCreateForm
+    context_object_name = 'areas'
+    template_name = 'geographical_areas_list.html'
+    success_url = reverse_lazy('geographical_areas_list')
 
-    def get_ctx(self):
-        areas = get_list_or_404(GeographicalArea.objects.order_by('area'))
-        ctx = {'areas': areas}
-        return ctx
-
-    def get(self, request):
-        return render(request, self.template, self.get_ctx())
-
-    def post(self, request):
-        geographical_area = request.POST.get('geographical_area')
-        image = request.FILES.get('image')
-
-        if not geographical_area:
-            return render(request, self.template, self.get_ctx())
-
-        if not image:
-            return render(request, self.template, self.get_ctx())
-
-        GeographicalArea.objects.create(
-            area=geographical_area,
-            image=image
-        )
-
-        return render(request, self.template, self.get_ctx())
+    # def get_ctx(self):
+    #     areas = get_list_or_404(GeographicalArea.objects.order_by('area'))
+    #     ctx = {'areas': areas}
+    #     return ctx
+    #
+    # def get(self, request):
+    #     return render(request, self.template, self.get_ctx())
+    #
+    # def post(self, request):
+    #     geographical_area = request.POST.get('geographical_area')
+    #     image = request.FILES.get('image')
+    #
+    #     if not geographical_area:
+    #         return render(request, self.template, self.get_ctx())
+    #
+    #     if not image:
+    #         return render(request, self.template, self.get_ctx())
+    #
+    #     GeographicalArea.objects.create(
+    #         area=geographical_area,
+    #         image=image
+    #     )
+    #
+    #     return render(request, self.template, self.get_ctx())
 
 
 class DiseasesListView(ListView):

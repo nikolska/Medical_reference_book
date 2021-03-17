@@ -7,17 +7,23 @@
 
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
-    {{ form.as_p }}
 
     <div class="mb-3">
-        <label for="geographical_area" class="form-label"><b>Add new one:</b></label>
-        <textarea class="form-control" id="geographical_area" name="geographical_area" rows="2" required></textarea>
+        <label for="{{ form.area.id_for_label }}"><b>Add new one:</b></label><br>
+        {{ form.area }}
     </div>
+
     <div class="mb-3">
-        <label for="image-area"><b>Image:</b> </label>
-        <input type="file" id="image-area" name="image" onchange="previewFile(this);" required><br>
-        <img class="img-small" id="previewImg" src="">
+        <label for="{{ form.image.id_for_label }}"><b>Image:</b> </label>
+        {{ form.image }}
+        <br><img class="img-small" id="previewImg" src="">
     </div>
+
+<!--    <div class="mb-3">-->
+<!--        <label for="image-area"><b>Image:</b> </label>-->
+<!--        <input type="file" id="image-area" name="image" onchange="previewFile(this);" required><br>-->
+<!--        <img class="img-small" id="previewImg" src="">-->
+<!--    </div>-->
 
     <input type="submit" value="Add">
 </form><br><br>
