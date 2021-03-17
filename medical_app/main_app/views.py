@@ -75,31 +75,6 @@ class GeographicalAreaListView(CreateView, ListView):
     template_name = 'geographical_areas_list.html'
     success_url = reverse_lazy('geographical_areas_list')
 
-    # def get_ctx(self):
-    #     areas = get_list_or_404(GeographicalArea.objects.order_by('area'))
-    #     ctx = {'areas': areas}
-    #     return ctx
-    #
-    # def get(self, request):
-    #     return render(request, self.template, self.get_ctx())
-    #
-    # def post(self, request):
-    #     geographical_area = request.POST.get('geographical_area')
-    #     image = request.FILES.get('image')
-    #
-    #     if not geographical_area:
-    #         return render(request, self.template, self.get_ctx())
-    #
-    #     if not image:
-    #         return render(request, self.template, self.get_ctx())
-    #
-    #     GeographicalArea.objects.create(
-    #         area=geographical_area,
-    #         image=image
-    #     )
-    #
-    #     return render(request, self.template, self.get_ctx())
-
 
 class DiseasesListView(ListView):
     """ Page with all disease from DB. """
