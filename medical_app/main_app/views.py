@@ -3,7 +3,10 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, View
 
-from .forms import GeographicalAreaCreateForm, OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm
+from .forms import (
+    DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm,
+    SymptomCreateForm, TreatmentsCreateForm
+)
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
 
 
@@ -129,6 +132,18 @@ class AddNewOrganView(CreateView):
     template_name = 'add_new_organ.html'
     form_class = OrganCreateForm
     success_url = reverse_lazy('organs_list')
+
+
+class DiseaseCreateView(CreateView):
+    """Create new disease"""
+
+    model = Disease
+    form_class = DiseaseCreateForm
+    template_name = 'add_new_disease.html'
+    success_url = reverse_lazy('disease_details')
+
+    def get_success_url(self, **kwargs):
+        return reverse("disease_details", kwargs={'pk': self.object.pk})
 
 
 class AddNewDiseaseView(View):

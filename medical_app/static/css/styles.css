@@ -97,3 +97,6 @@ th {
     display: flex;
     justify-content: space-around;
 }
+.no-bullet-list {
+    list-style-type: none;
+}

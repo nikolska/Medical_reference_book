@@ -8,9 +8,9 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  $("#myInput2").on("keyup", function() {
+  $("#myInputSymptom").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    $("#myList2 li").filter(function() {
+    $("#id_symptoms li").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
@@ -86,7 +86,7 @@ lightboxCtn.addEventListener('click', e => {
 
 $(document).ready(function(){
   $("input#id_image").on("change", function() {
-    const imageFile = $("input[type=file]").get(0).files[0];
+    const imageFile = $("input#id_image").get(0).files[0];
 
     if (imageFile) {
       const reader = new FileReader();
