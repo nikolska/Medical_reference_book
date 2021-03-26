@@ -146,94 +146,16 @@ class DiseaseCreateView(CreateView):
         return reverse("disease_details", kwargs={'pk': self.object.pk})
 
 
-class AddNewDiseaseView(View):
-    """ Adding new disease to DB. """
-
-    template = 'add_new_disease.html'
-
-    def get_ctx(self):
-        organs = get_list_or_404(Organ.objects.order_by('name'))
-        symptoms = get_list_or_404(Symptom.objects.order_by('name'))
-        choices = DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES
-        treatment = Treatment.objects.order_by('treatment')
-        geographical_areas = GeographicalArea.objects.order_by('area')
-        ctx = {'organs': organs,
-               'symptoms': symptoms,
-               'symptom_frequency_choices': choices,
-               'treatment': treatment,
-               'geographical_areas': geographical_areas}
-        return ctx
-
-    def get(self, request):
-        ctx = self.get_ctx()
-        return render(request, self.template, ctx)
-
-    def post(self, request):
-        # Try QueryString or Ajax to send post data
-        ctx = self.get_ctx()
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        geographical_area = request.POST.getlist('geographical_areas')
-        treatment = request.POST.getlist('treatment')
-        affected_organs = request.POST.getlist('affected_organs')
-        symptoms = request.POST.getlist('symptoms')
-        symptom_frequency = request.POST.getlist('symptom_frequency')
-        symptom_frequency = [i for i in symptom_frequency if i != '0']
-
-        if not name:
-            ctx['message'] = 'Name cannot be empty!'
-            return render(request, self.template, ctx)
-        if len(name) > 255:
-            ctx['message'] = 'Name cannot be longer than 255 characters!'
-            return render(request, self.template, ctx)
-
-        if not description:
-            ctx['message'] = 'Description cannot be empty!'
-            return render(request, self.template, ctx)
-
-        if not geographical_area:
-            ctx['message'] = 'Geographical area cannot be empty!'
-            return render(request, self.template, ctx)
-
-        if not treatment:
-            ctx['message'] = 'Treatment cannot be empty!'
-            return render(request, self.template, ctx)
-
-        if not affected_organs:
-            ctx['message'] = 'Choose one or more affected organs!'
-            return render(request, self.template, ctx)
-
-        if not symptoms:
-            ctx['message'] = 'Choose one or more symptoms!'
-            return render(request, self.template, ctx)
-
-        if not symptom_frequency:
-            ctx['message'] = "Choose symptom's frequency!"
-            return render(request, self.template, ctx)
-
-        if len(symptom_frequency) != len(symptoms):
-            ctx['message'] = "Choose symptoms with correct symptom's frequency!"
-            return render(request, self.template, ctx)
-
-        disease = Disease.objects.create(
-            name=name,
-            description=description
-        )
-
-        disease.geographical_area.set(geographical_area)
-        disease.treatment.set(treatment)
-        disease.affected_organs.set(affected_organs)
-
-        for i in range(0, len(symptoms)):
-            symptom = Symptom.objects.get(pk=symptoms[i])
-            DiseaseSymptom.objects.create(
-                disease=disease,
-                symptom=symptom,
-                symptom_frequency=symptom_frequency[i]
-            )
-
-        disease.save()
-        return HttpResponseRedirect(reverse('diseases_list'))
+    # symptom_frequency = request.POST.getlist('symptom_frequency')
+    # symptom_frequency = [i for i in symptom_frequency if i != '0']
+    #
+    # for i in range(0, len(symptoms)):
+    #     symptom = Symptom.objects.get(pk=symptoms[i])
+    #     DiseaseSymptom.objects.create(
+    #         disease=disease,
+    #         symptom=symptom,
+    #         symptom_frequency=symptom_frequency[i]
+    #     )
 
 
 class AuthorizationView(View):

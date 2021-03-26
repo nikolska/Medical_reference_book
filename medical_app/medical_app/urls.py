@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path, re_path
 
 from main_app.views import (
-    AddNewDiseaseView, AddNewOrganView, AuthorizationView, DiseaseCreateView,
+    AddNewOrganView, AuthorizationView, DiseaseCreateView,
     DiseaseDetailsView, DiseasesListView, GeographicalAreaListView,
     HomePageView, LogInView, OrgansListView, RegistrationView,
     SearchDiseaseView, SymptomsListView, TreatmentsListView

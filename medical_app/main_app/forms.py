@@ -7,6 +7,7 @@ class DiseaseCreateForm(forms.ModelForm):
     """Create new disease form"""
 
     symptom_frequency = forms.ChoiceField(choices=DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES)
+    # use fieldset
 
     class Meta:
         """Meta class"""
@@ -29,7 +30,8 @@ class DiseaseCreateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'cols': 140, 'rows': 5}),
             'geographical_area': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'affected_organs': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
-            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
+            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'},
+                                                     choices=DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES),
             'treatment': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'})
         }
 
