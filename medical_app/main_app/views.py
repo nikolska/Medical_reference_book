@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, View
+from django.views.generic import CreateView, DetailView, ListView, TemplateView, View
 
 from .forms import (
     DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm,
@@ -10,13 +10,10 @@ from .forms import (
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
 
 
-class HomePageView(View):
+class HomePageView(TemplateView):
     """ Start (home) page. """
 
-    template = 'home_page.html'
-
-    def get(self, request):
-        return render(request, self.template)
+    template_name = 'home_page.html'
 
 
 class OrgansListView(ListView):
@@ -75,6 +72,8 @@ class DiseaseDetailsView(DetailView):
     template_name = 'disease_details.html'
 
     def get_context_data(self, **kwargs):
+        """Insert the form into the context dict"""
+
         disease = get_object_or_404(Disease, pk=self.kwargs['pk'])
         symptoms_details = DiseaseSymptom.objects.filter(disease=disease).order_by('-symptom_frequency')
         ctx = super().get_context_data(**kwargs)
@@ -143,8 +142,8 @@ class DiseaseCreateView(CreateView):
     success_url = reverse_lazy('disease_details')
 
     def get_success_url(self, **kwargs):
+        """Return the URL to redirect to after processing a valid form"""
         return reverse("disease_details", kwargs={'pk': self.object.pk})
-
 
     # symptom_frequency = request.POST.getlist('symptom_frequency')
     # symptom_frequency = [i for i in symptom_frequency if i != '0']
