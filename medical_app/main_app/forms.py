@@ -7,20 +7,15 @@ class DiseaseCreateForm(forms.ModelForm):
     """Create new disease form"""
 
     symptom_frequency = forms.ChoiceField(choices=DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES)
-    # use fieldset
 
     class Meta:
         """Meta class"""
         model = Disease
-        fields = [
-            'name', 'description', 'symptoms', 'affected_organs',
-            'geographical_area', 'treatment', 'symptom_frequency'
-        ]
+        fields = ['name', 'description', 'symptoms', 'affected_organs', 'geographical_area', 'treatment']
         labels = {
             'name': 'Disease',
             'description': 'Description',
             'symptoms': 'Symptoms',
-            'symptom_frequency': 'frequency',
             'affected_organs': 'Affected organs',
             'geographical_area': 'Geographical Area',
             'treatment': 'Treatment'

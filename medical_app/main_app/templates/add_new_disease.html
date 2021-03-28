@@ -27,35 +27,9 @@
     <b>{{ form.symptoms.label }}:</b><br>
     <input id="myInputSymptom" type="text" placeholder="search symptom.."><br>
     {{ form.symptoms }}
-    {{ form.symptom_frequency }}
 
-    <br><b>{{ form.treatment.label }}:</b><br>
+    <b>{{ form.treatment.label }}:</b><br>
     {{ form.treatment }}
-
-<!--    <br><br><br>-->
-<!--    <div class="mb-3">-->
-<!--        <label class="form-label"><b>Symptoms:</b></label><br>-->
-<!--        <input id="myInput2" type="text" placeholder="search symptom.."><br><br>-->
-<!--        {% if symptoms %}-->
-<!--            <ul id="myList2">-->
-<!--                {% for symptom in symptoms %}-->
-<!--                    <li style="list-style:none;">-->
-<!--                        <input type="checkbox" class="input-symptoms" id="symptoms" name="symptoms" value="{{ symptom.pk }}">-->
-<!--                        <label for="symptoms">{{ symptom.name }}</label>-->
-<!--                        (<i>frequency:</i>-->
-<!--                            <select class="select-frequency" name="symptom_frequency" id="select-frequency">-->
-<!--                                {% for symptom_frequency in symptom_frequency_choices %}-->
-<!--                                    <option value="{{ symptom_frequency.0 }}">{{ symptom_frequency.1 }}</option>-->
-<!--                                {% endfor %}-->
-<!--                            </select>-->
-<!--                        )<br>-->
-<!--                    </li>-->
-<!--                {% endfor %}-->
-<!--            </ul>-->
-<!--        {% else %}-->
-<!--            <p>No symptoms found.</p>-->
-<!--        {% endif %}-->
-<!--    </div>-->
 
     <input type="submit" id="btn-add-disease" value="Add">
 </form>

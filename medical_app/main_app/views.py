@@ -1,3 +1,6 @@
+from formtools.preview import FormPreview
+from formtools.wizard.views import WizardView, SessionWizardView
+
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
@@ -144,17 +147,6 @@ class DiseaseCreateView(CreateView):
     def get_success_url(self, **kwargs):
         """Return the URL to redirect to after processing a valid form"""
         return reverse("disease_details", kwargs={'pk': self.object.pk})
-
-    # symptom_frequency = request.POST.getlist('symptom_frequency')
-    # symptom_frequency = [i for i in symptom_frequency if i != '0']
-    #
-    # for i in range(0, len(symptoms)):
-    #     symptom = Symptom.objects.get(pk=symptoms[i])
-    #     DiseaseSymptom.objects.create(
-    #         disease=disease,
-    #         symptom=symptom,
-    #         symptom_frequency=symptom_frequency[i]
-    #     )
 
 
 class AuthorizationView(View):
