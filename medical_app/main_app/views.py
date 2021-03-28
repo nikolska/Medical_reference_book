@@ -2,10 +2,12 @@ from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, View
+from django.views.generic import (
+    CreateView, DetailView, FormView, ListView, RedirectView, TemplateView, View
+)
 
 from .forms import (
     DiseaseCreateForm, GeographicalAreaCreateForm, LoginUserForm,
@@ -153,13 +155,10 @@ class DiseaseCreateView(CreateView):
         return reverse("disease_details", kwargs={'pk': self.object.pk})
 
 
-class AuthorizationView(View):
+class AuthorizationView(TemplateView):
     """ Authorization page with 2 options: login or register. """
 
-    template = 'authorization.html'
-
-    def get(self, request):
-        return render(request, self.template)
+    template_name = 'authorization.html'
 
 
 class LogInView(FormView):
@@ -173,6 +172,14 @@ class LogInView(FormView):
     def form_valid(self, form):
         form.login(self.request)
         return super().form_valid(form)
+
+
+class LogOutView(RedirectView):
+    url = reverse_lazy('home_page')
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
 
 
 class RegistrationView(View):
