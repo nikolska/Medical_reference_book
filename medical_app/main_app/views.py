@@ -8,8 +8,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, View
 
 from .forms import (
-    DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm,
-    SymptomCreateForm, TreatmentsCreateForm
+    DiseaseCreateForm, GeographicalAreaCreateForm, LoginUserForm,
+    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
 
@@ -165,7 +165,9 @@ class AuthorizationView(View):
 class LogInView(FormView):
     """ Login page. """
 
+    model = User
     template_name = 'log_in.html'
+    form_class = LoginUserForm
     success_url = reverse_lazy('home_page')
 
     def form_valid(self, form):
