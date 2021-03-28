@@ -1,6 +1,10 @@
 from django import forms
+from django.contrib.auth import get_user_model, authenticate, login
 
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
+
+
+User = get_user_model()
 
 
 class DiseaseCreateForm(forms.ModelForm):
@@ -77,3 +81,19 @@ class TreatmentsCreateForm(forms.ModelForm):
             'treatment': forms.Textarea(attrs={'cols': 140, 'rows': 2, 'placeholder': 'New Treatment'})
         }
 
+
+class LoginUserForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data['username']
+        password = cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        if user is None:
+            self.add_error(None, 'Podaj poprawny login lub hasło')
+
+    def login(self, request):
+        user = authenticate(**self.cleaned_data)
+        return login(request, user)

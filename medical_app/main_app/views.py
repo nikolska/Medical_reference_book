@@ -1,16 +1,20 @@
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
+from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, TemplateView, View
+from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, View
 
 from .forms import (
     DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm,
     SymptomCreateForm, TreatmentsCreateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
+
+
+User = get_user_model()
 
 
 class HomePageView(TemplateView):
@@ -158,65 +162,18 @@ class AuthorizationView(View):
         return render(request, self.template)
 
 
-class LogInView(View):
+class LogInView(FormView):
     """ Login page. """
 
-    template = 'log_in.html'
+    template_name = 'log_in.html'
+    success_url = reverse_lazy('home_page')
 
-    def get(self, request):
-        return render(request, self.template)
+    def form_valid(self, form):
+        form.login(self.request)
+        return super().form_valid(form)
 
 
 class RegistrationView(View):
     """ Register page. """
 
     template = 'registration.html'
-
-    def get(self, request):
-        return render(request, self.template)
-
-    def post(self, request):
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password_repeat = request.POST.get('password_repeat')
-        medical_license = request.POST.get('license')
-
-        if not first_name:
-            ctx = {'message': 'First name cannot be empty!'}
-            return render(request, self.template, ctx)
-        if len(first_name) > 255:
-            ctx = {'message': 'First name cannot be longer than 255 characters!'}
-            return render(request, self.template, ctx)
-
-        if not last_name:
-            ctx = {'message': 'Last name cannot be empty!'}
-            return render(request, self.template, ctx)
-        if len(last_name) > 255:
-            ctx = {'message': 'Last name cannot be longer than 255 characters!'}
-            return render(request, self.template, ctx)
-
-        if not email:
-            ctx = {'message': 'Email cannot be empty!'}
-            return render(request, self.template, ctx)
-
-        if not password:
-            ctx = {'message': 'Password cannot be empty!'}
-            return render(request, self.template, ctx)
-        if not password_repeat:
-            ctx = {'message': 'Repeat your password, please!'}
-            return render(request, self.template, ctx)
-        if password != password_repeat:
-            ctx = {'message': 'Passwords are different!'}
-            return render(request, self.template, ctx)
-
-        # new_user = User.objects.create_user(
-        #     first_name=first_name,
-        #     last_name=last_name,
-        #     email=email,
-        #     password=password,
-        #     medical_license=medical_license
-        # )
-
-        return HttpResponseRedirect(reverse('home_page'))
