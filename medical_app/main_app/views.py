@@ -2,17 +2,19 @@ from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
 from django.contrib.auth import logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import Group, Permission
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
-    CreateView, DetailView, FormView, ListView, RedirectView, TemplateView, View
+    CreateView, DetailView, FormView, ListView, RedirectView, TemplateView, UpdateView, View
 )
 
 from .forms import (
     DiseaseCreateForm, GeographicalAreaCreateForm, LoginUserForm,
-    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm
+    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm,
+    UserPasswordUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
@@ -185,7 +187,7 @@ class LogOutView(RedirectView):
 
 
 class RegistrationView(FormView):
-    """ Register page. """
+    """ Registration page. """
 
     model = User
     form_class = UserCreateForm
@@ -203,6 +205,7 @@ class RegistrationView(FormView):
 
         doctors = Group.objects.get(name='Doctors')
         patients = Group.objects.get(name='Patients')
+        permission = Permission.objects.get(name='Can change user')
 
         user = User.objects.create_user(
             first_name=first_name,
@@ -211,13 +214,34 @@ class RegistrationView(FormView):
             email=email,
             medical_license=medical_license
         )
-        user.set_password(password)
 
         if medical_license is True:
             user.groups.add(doctors)
         else:
             user.groups.add(patients)
 
+        user.set_password(password)
+        user.user_permissions.add(permission)
         user.save()
         return HttpResponseRedirect(self.get_success_url())
 
+
+class UserPasswordUpdateView(PermissionRequiredMixin, UpdateView):
+    """Change user's password."""
+
+    model = User
+    form_class = UserPasswordUpdateForm
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('log_in')
+    permission_required = 'main_app.change_user'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = None
+        return kwargs
+
+    def form_valid(self, form):
+        user = self.get_object()
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+        return HttpResponseRedirect(self.get_success_url())

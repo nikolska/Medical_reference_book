@@ -10,6 +10,7 @@
     {% if request.user.is_authenticated %}
         <br><br><h1>Hello, {{ request.user.first_name }} {{ request.user.last_name }}! </h1>
         <br><br><h3>Now you can start to work with the <b>MedicalWebSite</b>!</h3>
+        <br><br><h5><a href="{% url 'change_password' request.user.pk %}"><b>Change you password</b></a></h5>
     {% else %}
         <h1>Hello! </h1><br>
         <h3>This is the <b>MedicalWebSite</b> allows you to search for diseases by symptoms,

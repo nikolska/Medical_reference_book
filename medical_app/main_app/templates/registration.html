@@ -20,7 +20,11 @@
     <br><br><b>{{ form.username.label }}:</b>
     {{ form.username }}
 
-    <br><br><b>{{ form.email.label }}:</b>
+    <div id="passwordHelpBlock" class="form-text">
+        150 characters or fewer. Letters, digits and @/./+/-/_ only.
+    </div><br>
+
+    <b>{{ form.email.label }}:</b>
     {{ form.email }}
 
     <br><br><b>{{ form.password.label }}:</b>
