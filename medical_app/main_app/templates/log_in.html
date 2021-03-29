@@ -5,14 +5,20 @@
 
 {% block content %}
 
-<h2 align="center">Log In</h2>
+<h2 align="center">Log In</h2><br>
 
-<form method="POST">
-    {% csrf_token %}
+<div align="center">
+    <form method="POST">
+        {% csrf_token %}
 
-    {{ form.as_p }}
+        <b>{{ form.username.label }}:</b>
+        {{ form.username }}
 
-    <input type="submit" value="Log In">
-</form>
+        <br><br><b>{{ form.password.label }}:</b>
+        {{ form.password }}
+
+        <br><br><input type="submit" value="Log In">
+    </form>
+</div>
 
 {% endblock %}

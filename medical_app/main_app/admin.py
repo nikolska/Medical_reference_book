@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.utils.safestring import mark_safe
 
-from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
+from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
 
 class DiseaseSymptomInline(admin.TabularInline):
@@ -70,3 +71,4 @@ admin.site.register(Treatment, TreatmentModelAdmin)
 admin.site.register(GeographicalArea, GeographicalAreaModelAdmin)
 admin.site.register(Disease, DiseaseModelAdmin)
 admin.site.register(DiseaseSymptom, DiseaseSymptomModelAdmin)
+admin.site.register(User, UserAdmin)

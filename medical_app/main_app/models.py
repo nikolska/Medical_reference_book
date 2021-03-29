@@ -1,5 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+
+
+class User(AbstractUser):
+    """User model."""
+    medical_license = models.BooleanField(default=False)
 
 
 class Organ(models.Model):
@@ -68,6 +74,7 @@ class Disease(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        """Get URl to the singe object of the model."""
         return reverse('disease_details', args=[str(self.pk)])
 
     class Meta:

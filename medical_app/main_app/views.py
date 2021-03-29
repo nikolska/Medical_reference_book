@@ -1,8 +1,9 @@
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
-from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.http import Http404
+from django.contrib.auth import logout
+from django.contrib.auth.models import Group
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
@@ -11,12 +12,9 @@ from django.views.generic import (
 
 from .forms import (
     DiseaseCreateForm, GeographicalAreaCreateForm, LoginUserForm,
-    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm
+    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm
 )
-from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
-
-
-User = get_user_model()
+from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
 
 class HomePageView(TemplateView):
@@ -170,19 +168,56 @@ class LogInView(FormView):
     success_url = reverse_lazy('home_page')
 
     def form_valid(self, form):
+        """If the form is valid, log in the user."""
         form.login(self.request)
         return super().form_valid(form)
 
 
 class LogOutView(RedirectView):
+    """Logout page. """
+
     url = reverse_lazy('home_page')
 
     def get(self, request, *args, **kwargs):
+        """Log out the user and redirect to the supplied URL."""
         logout(request)
         return super().get(request, *args, **kwargs)
 
 
-class RegistrationView(View):
+class RegistrationView(FormView):
     """ Register page. """
 
-    template = 'registration.html'
+    model = User
+    form_class = UserCreateForm
+    template_name = 'registration.html'
+    success_url = reverse_lazy('log_in')
+
+    def form_valid(self, form):
+        """If the form is valid, register the user."""
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        medical_license = form.cleaned_data['medical_license']
+
+        doctors = Group.objects.get(name='Doctors')
+        patients = Group.objects.get(name='Patients')
+
+        user = User.objects.create_user(
+            first_name=first_name,
+            last_name=last_name,
+            username=username,
+            email=email,
+            medical_license=medical_license
+        )
+        user.set_password(password)
+
+        if medical_license is True:
+            user.groups.add(doctors)
+        else:
+            user.groups.add(patients)
+
+        user.save()
+        return HttpResponseRedirect(self.get_success_url())
+

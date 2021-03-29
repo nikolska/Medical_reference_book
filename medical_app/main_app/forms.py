@@ -1,10 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import authenticate, login
 
-from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment
-
-
-User = get_user_model()
+from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
 
 class DiseaseCreateForm(forms.ModelForm):
@@ -83,17 +80,45 @@ class TreatmentsCreateForm(forms.ModelForm):
 
 
 class LoginUserForm(forms.Form):
+    """Login form."""
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
 
     def clean(self):
+        """Check the username and user's password in DB."""
         cleaned_data = super().clean()
         username = cleaned_data['username']
         password = cleaned_data['password']
         user = authenticate(username=username, password=password)
         if user is None:
-            self.add_error(None, 'Podaj poprawny login lub hasło')
+            self.add_error(None, 'Enter a valid username and password!')
 
     def login(self, request):
+        """Log in the user."""
         user = authenticate(**self.cleaned_data)
         return login(request, user)
+
+
+class UserCreateForm(forms.ModelForm):
+    """Create new user form."""
+    repeat_password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        """Meta class."""
+        model = User
+        fields = [
+            'first_name', 'last_name', 'username', 'email',
+            'medical_license', 'password', 'repeat_password'
+        ]
+        widgets = {
+            'password': forms.PasswordInput,
+            'repeat_password': forms.PasswordInput
+        }
+
+    def clean(self):
+        """Method to validate the password."""
+        cleaned_data = super().clean()
+        if cleaned_data['password'] != cleaned_data['repeat_password']:
+            self.add_error('password', 'Passwords do not match!')
+        if User.objects.filter(username=cleaned_data['username']):
+            self.add_error('username', 'This username is already taken, try another one!')
