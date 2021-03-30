@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
+{% load has_group %}
 
 {% block title %}Treatments{% endblock %}
 
 
 {% block content %}
 
-<form action="" method="POST">
-    {% csrf_token%}
+{% if request.user.is_authenticated %}
+    {% if request.user|has_group:"Doctors" %}
+        <form action="" method="POST">
+            {% csrf_token%}
 
-    <div class="mb-3">
-        <br><label for="{{ form.treatment.id_for_label }}"><b>Add new one:</b></label><br>
-        {{ form.treatment }}
-    </div>
+            <div class="mb-3">
+                <br><label for="{{ form.treatment.id_for_label }}"><b>Add new one:</b></label><br>
+                {{ form.treatment }}
+            </div>
 
-    <input type="submit" value="Add">
-</form><br><br>
+            <input type="submit" value="Add">
+        </form><br><br>
+    {% endif %}
+{% endif %}
 
 <input id="myInput" type="text" placeholder="search treatment.."><br><br>
 {% if treatments %}

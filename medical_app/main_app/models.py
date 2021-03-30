@@ -7,6 +7,11 @@ class User(AbstractUser):
     """User model."""
     medical_license = models.BooleanField(default=False)
 
+    @property
+    def full_name(self):
+        """Return user first name and last name."""
+        return f'{self.first_name} {self.last_name}'
+
 
 class Organ(models.Model):
     """ Human organs model. """

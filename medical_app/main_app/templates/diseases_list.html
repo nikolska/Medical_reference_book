@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
+{% load has_group %}
 
 {% block title %}Diseases{% endblock %}
 
 
 {% block content %}
 
-<button type="button" class="btn btn-outline-light"><a href="{% url 'add_disease' %}">Add new disease</a></button>
-<br><br>
+{% if request.user.is_authenticated %}
+    {% if request.user|has_group:"Doctors" %}
+        <button type="button" class="btn btn-outline-light">
+            <a href="{% url 'add_disease' %}">Add new disease</a>
+        </button><br><br>
+    {% endif %}
+{% endif %}
+
 <input id="searchInput" type="text" placeholder="search disease.."><br><br>
 {% if diseases %}
     <ul id="searchList">

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load has_group %}
 
 {% block title %}Symptoms{% endblock %}
 
@@ -21,24 +22,28 @@
         {% endif %}
     </div>
 
-    <div align="center">
-        <h4>Add new symptom</h4><br>
-        <form action="" method="POST">
-            {% csrf_token%}
+    {% if request.user.is_authenticated %}
+        {% if request.user|has_group:"Doctors" %}
+            <div align="center">
+                <h4>Add new symptom</h4><br>
+                <form action="" method="POST">
+                    {% csrf_token%}
 
-            <div class="mb-3">
-                <label for="{{ form.name.id_for_label }}"><b>Symptom:</b></label><br>
-                {{ form.name }}
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}"><b>Symptom:</b></label><br>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.affected_organ.id_for_label }}"><b>Affected organ:</b></label><br>
+                        {{ form.affected_organ }}
+                    </div>
+
+                    <input type="submit" value="Add">
+                </form>
             </div>
-
-            <div class="mb-3">
-                <label for="{{ form.affected_organ.id_for_label }}"><b>Affected organ:</b></label><br>
-                {{ form.affected_organ }}
-            </div>
-
-            <input type="submit" value="Add">
-        </form>
-    </div>
+        {% endif %}
+    {% endif %}
 </div>
 
 {% endblock %}
