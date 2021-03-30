@@ -5,10 +5,6 @@
 
 {% block content %}
 
-{% if message %}
-    <h3 style="color: red;" align="center">{{ message }}</h3>
-{% endif %}
-
 <form action="" method="POST">
     {% csrf_token%}
 
@@ -29,6 +25,7 @@
     {{ form.symptoms }}
 
     <b>{{ form.treatment.label }}:</b><br>
+    <input id="myInputTreatment" type="text" placeholder="search symptom.."><br>
     {{ form.treatment }}
 
     <input type="submit" id="btn-add-disease" value="Add">

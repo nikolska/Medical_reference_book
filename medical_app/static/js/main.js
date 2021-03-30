@@ -17,6 +17,15 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+  $("#myInputTreatment").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#id_treatment li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+$(document).ready(function(){
   $("#myInput3").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#myList3 li").filter(function() {
