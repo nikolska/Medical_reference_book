@@ -2,7 +2,7 @@ from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
 from django.contrib.auth import logout
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
@@ -134,15 +134,18 @@ class SearchDiseaseView(View):
         return render(request, 'diseases_list.html', ctx)
 
 
-class AddNewOrganView(CreateView):
+class OrganCreateView(UserPassesTestMixin, CreateView):
     """ Adding new organ to DB. """
     model = Organ
     template_name = 'add_new_organ.html'
     form_class = OrganCreateForm
     success_url = reverse_lazy('organs_list')
 
+    def test_func(self):
+        return self.request.user.groups.filter(name='Doctors').exists()
 
-class DiseaseCreateView(CreateView):
+
+class DiseaseCreateView(UserPassesTestMixin, CreateView):
     """Create new disease"""
 
     model = Disease
@@ -153,6 +156,9 @@ class DiseaseCreateView(CreateView):
     def get_success_url(self, **kwargs):
         """Return the URL to redirect to after processing a valid form"""
         return reverse("disease_details", kwargs={'pk': self.object.pk})
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='Doctors').exists()
 
 
 class AuthorizationView(TemplateView):

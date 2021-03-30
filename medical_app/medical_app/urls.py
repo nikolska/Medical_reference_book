@@ -19,10 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path, re_path
 
 from main_app.views import (
-    AddNewOrganView, AuthorizationView, DiseaseCreateView,
-    DiseaseDetailsView, DiseasesListView, GeographicalAreaListView,
-    HomePageView, LogInView, LogOutView, OrgansListView, RegistrationView,
-    SearchDiseaseView, SymptomsListView, TreatmentsListView, UserPasswordUpdateView
+    AuthorizationView, DiseaseCreateView, DiseaseDetailsView,
+    DiseasesListView, GeographicalAreaListView, HomePageView,
+    LogInView, LogOutView, OrganCreateView, OrgansListView,
+    RegistrationView, SearchDiseaseView, SymptomsListView,
+    TreatmentsListView, UserPasswordUpdateView
 )
 
 
@@ -39,7 +40,7 @@ urlpatterns = [
     path('log_in/', LogInView.as_view(), name='log_in'),
     path('log_out/', LogOutView.as_view(), name='logout'),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
-    path('organs/add/', AddNewOrganView.as_view(), name='add_organ'),
+    path('organs/add/', OrganCreateView.as_view(), name='add_organ'),
     path('registration/', RegistrationView.as_view(), name='registration'),
     path('symptoms/', SymptomsListView.as_view(), name='symptoms_list'),
     path('treatments/', TreatmentsListView.as_view(), name='treatments_list'),
