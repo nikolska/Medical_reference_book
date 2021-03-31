@@ -5,19 +5,12 @@
 
 {% block content %}
 
-{% if object_list %}
-    {% for object in object_list %}
-        {{ object.name }}
-    {% endfor %}
-{% endif %}
-
-<form method="GET">
+<form method="POST">
     {% csrf_token %}
 
     {{ form.as_p }}
 
     <br><br><p align="center"><input type="submit" value="Search"></p>
 </form>
-
 
 {% endblock %}

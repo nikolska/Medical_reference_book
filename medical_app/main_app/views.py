@@ -1,3 +1,5 @@
+import itertools
+
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
@@ -5,8 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView
 
@@ -94,33 +96,36 @@ class SearchDiseaseView(FormView, ListView):
     model = Disease
     template_name = 'search_disease.html'
     form_class = DiseaseSearchForm
-    success_url = reverse_lazy('search_disease')
 
-    def get_queryset(self):
-        """Return the list of items for this view"""
+    def post(self, request):
+        """Filter DB to search objects and redirect URL."""
+        symptoms = request.POST.getlist('symptoms')
+        organs = request.POST.getlist('affected_organs')
+        geographical_areas = request.POST.getlist('geographical_areas')
 
-        symptoms = self.request.GET.getlist('symptoms')
-        affected_organs = self.request.GET.getlist('affected_organs')
-        geographical_area = self.request.GET.getlist('geographical_area')
+        if organs:
+            try:
+                diseases = Disease.objects.filter(affected_organs__in=organs).distinct()
+            except:
+                raise Http404
 
-        object_list = Disease.objects.all()
-        data = symptoms, affected_organs, geographical_area
+        if geographical_areas:
+            try:
+                diseases = Disease.objects.filter(geographical_area__in=geographical_areas).distinct()
+            except:
+                raise Http404
 
-        if any(data):
-            symptoms = symptoms if symptoms else Symptom.objects.all()
-            affected_organs = affected_organs if affected_organs else Organ.objects.all()
-            geographical_area = geographical_area if geographical_area else GeographicalArea.objects.all()
+        if symptoms:
+            try:
+                diseases = Disease.objects.filter(symptoms__in=symptoms).distinct()
+            except:
+                raise Http404
 
-            diseases = Disease.objects.filter(
-                symptoms__in=symptoms,
-                affected_organs__in=affected_organs,
-                geographical_area__in=geographical_area
-            ).distinct()
+        if not organs and not symptoms and not geographical_areas:
+            diseases = Disease.objects.order_by('name')
 
-            object_list = diseases
-            return object_list
-        else:
-            return object_list
+        ctx = {'diseases': diseases}
+        return render(request, 'diseases_list.html', ctx)
 
 
 class OrganCreateView(UserPassesTestMixin, CreateView):
