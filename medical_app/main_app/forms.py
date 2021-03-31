@@ -6,8 +6,6 @@ from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, T
 class DiseaseCreateForm(forms.ModelForm):
     """Create new disease form"""
 
-    symptom_frequency = forms.ChoiceField(choices=DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES)
-
     class Meta:
         """Meta class"""
         model = Disease
@@ -25,9 +23,33 @@ class DiseaseCreateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'cols': 140, 'rows': 5}),
             'geographical_area': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'affected_organs': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
-            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'},
-                                                     choices=DiseaseSymptom.SYMPTOM_FREQUENCY_CHOICES),
+            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'treatment': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'})
+        }
+
+
+class DiseaseSearchForm(forms.ModelForm):
+    """Form to search the disease."""
+
+    def __init__(self, *args, **kwargs):
+        super(DiseaseSearchForm, self).__init__(*args, **kwargs)
+        self.fields['symptoms'].required = False
+        self.fields['affected_organs'].required = False
+        self.fields['geographical_area'].required = False
+
+    class Meta:
+        """Meta class"""
+        model = Disease
+        fields = ['symptoms', 'affected_organs', 'geographical_area']
+        labels = {
+            'symptoms': 'Symptoms',
+            'affected_organs': 'Affected organs',
+            'geographical_area': 'Geographical Area'
+        }
+        widgets = {
+            'geographical_area': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
+            'affected_organs': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
+            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
         }
 
 
