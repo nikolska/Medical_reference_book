@@ -16,15 +16,15 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 
 from main_app.views import (
     AuthorizationView, DiseaseCreateView, DiseaseDetailsView,
     DiseasesListView, GeographicalAreaListView, HomePageView,
-    LogInView, OrganCreateView, OrgansListView,
-    RegistrationView, SearchDiseaseView, SymptomsListView,
-    TreatmentsListView, UserPasswordUpdateView
+    OrganCreateView, OrgansListView, RegistrationView,
+    SearchDiseaseView, SymptomsListView, TreatmentsListView,
+    UserPasswordUpdateView,
 )
 
 
@@ -38,7 +38,7 @@ urlpatterns = [
     path('diseases/add/', DiseaseCreateView.as_view(), name='add_disease'),
     path('diseases/search/', SearchDiseaseView.as_view(), name='search_disease'),
     path('geographical_areas/', GeographicalAreaListView.as_view(), name='geographical_areas_list'),
-    path('log_in/', LogInView.as_view(), name='log_in'),
+    path('log_in/', LoginView.as_view(template_name='log_in.html'), name='log_in'),
     path('log_out/', LogoutView.as_view(), name='logout'),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
     path('organs/add/', OrganCreateView.as_view(), name='add_organ'),

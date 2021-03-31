@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'main_app',
 ]
 
+
 AUTH_USER_MODEL = 'main_app.User'
 
+LOGIN_REDIRECT_URL = 'home_page'
 LOGOUT_REDIRECT_URL = 'home_page'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

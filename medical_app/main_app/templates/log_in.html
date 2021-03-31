@@ -11,6 +11,12 @@
     <form method="POST">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
         <b>{{ form.username.label }}:</b>
         {{ form.username }}
 

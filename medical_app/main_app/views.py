@@ -1,19 +1,19 @@
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
+from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
-    CreateView, DetailView, FormView, ListView, RedirectView, TemplateView, UpdateView, View
+    CreateView, DetailView, FormView, ListView, TemplateView, UpdateView, View
 )
 
 from .forms import (
-    DiseaseCreateForm, GeographicalAreaCreateForm, LoginUserForm,
-    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm,
-    UserPasswordUpdateForm
+    DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm, SymptomCreateForm,
+    TreatmentsCreateForm, UserCreateForm, UserPasswordUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
@@ -166,20 +166,6 @@ class AuthorizationView(TemplateView):
     template_name = 'authorization.html'
 
 
-class LogInView(FormView):
-    """ Login page. """
-
-    model = User
-    template_name = 'log_in.html'
-    form_class = LoginUserForm
-    success_url = reverse_lazy('home_page')
-
-    def form_valid(self, form):
-        """If the form is valid, log in the user."""
-        form.login(self.request)
-        return super().form_valid(form)
-
-
 class RegistrationView(FormView):
     """ Registration page. """
 
@@ -239,3 +225,4 @@ class UserPasswordUpdateView(PermissionRequiredMixin, UpdateView):
         user.set_password(form.cleaned_data['password'])
         user.save()
         return HttpResponseRedirect(self.get_success_url())
+
