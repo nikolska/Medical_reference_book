@@ -4,16 +4,17 @@ from formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.views import PasswordChangeView
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
-    CreateView, DetailView, FormView, ListView, TemplateView, UpdateView, View
+    CreateView, DetailView, FormView, ListView, TemplateView, View
 )
 
 from .forms import (
-    DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm, SymptomCreateForm,
-    TreatmentsCreateForm, UserCreateForm, UserPasswordUpdateForm
+    DiseaseCreateForm, GeographicalAreaCreateForm, OrganCreateForm,
+    SymptomCreateForm, TreatmentsCreateForm, UserCreateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
@@ -206,23 +207,10 @@ class RegistrationView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserPasswordUpdateView(PermissionRequiredMixin, UpdateView):
+class UserPasswordUpdateView(PermissionRequiredMixin, PasswordChangeView):
     """Change user's password."""
 
-    model = User
-    form_class = UserPasswordUpdateForm
     template_name = 'change_password.html'
-    success_url = reverse_lazy('log_in')
+    success_url = reverse_lazy('home_page')
     permission_required = 'main_app.change_user'
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['instance'] = None
-        return kwargs
-
-    def form_valid(self, form):
-        user = self.get_object()
-        user.set_password(form.cleaned_data['password'])
-        user.save()
-        return HttpResponseRedirect(self.get_success_url())
 

@@ -102,21 +102,3 @@ class UserCreateForm(forms.ModelForm):
         if User.objects.filter(username=cleaned_data['username']):
             self.add_error('username', 'This username is already taken, try another one!')
 
-
-class UserPasswordUpdateForm(forms.ModelForm):
-    """Form to change user's password."""
-
-    repeat_password = forms.CharField(widget=forms.PasswordInput, label='Repeat new password')
-
-    class Meta:
-        """Meta class."""
-        model = User
-        fields = ['password', ]
-        labels = {'password': 'New password'}
-        widgets = {'password': forms.PasswordInput}
-
-    def clean(self):
-        """Method to validate the password."""
-        cleaned_data = super().clean()
-        if cleaned_data['password'] != cleaned_data['repeat_password']:
-            self.add_error('password', 'Passwords do not match!')
