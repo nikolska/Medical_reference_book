@@ -1,7 +1,6 @@
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
-from django.contrib.auth import logout
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.http import Http404, HttpResponseRedirect
@@ -179,17 +178,6 @@ class LogInView(FormView):
         """If the form is valid, log in the user."""
         form.login(self.request)
         return super().form_valid(form)
-
-
-class LogOutView(RedirectView):
-    """Logout page. """
-
-    url = reverse_lazy('home_page')
-
-    def get(self, request, *args, **kwargs):
-        """Log out the user and redirect to the supplied URL."""
-        logout(request)
-        return super().get(request, *args, **kwargs)
 
 
 class RegistrationView(FormView):

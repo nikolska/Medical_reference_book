@@ -13,15 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, re_path
 
 from main_app.views import (
     AuthorizationView, DiseaseCreateView, DiseaseDetailsView,
     DiseasesListView, GeographicalAreaListView, HomePageView,
-    LogInView, LogOutView, OrganCreateView, OrgansListView,
+    LogInView, OrganCreateView, OrgansListView,
     RegistrationView, SearchDiseaseView, SymptomsListView,
     TreatmentsListView, UserPasswordUpdateView
 )
@@ -38,7 +39,7 @@ urlpatterns = [
     path('diseases/search/', SearchDiseaseView.as_view(), name='search_disease'),
     path('geographical_areas/', GeographicalAreaListView.as_view(), name='geographical_areas_list'),
     path('log_in/', LogInView.as_view(), name='log_in'),
-    path('log_out/', LogOutView.as_view(), name='logout'),
+    path('log_out/', LogoutView.as_view(), name='logout'),
     path('organs/', OrgansListView.as_view(), name='organs_list'),
     path('organs/add/', OrganCreateView.as_view(), name='add_organ'),
     path('registration/', RegistrationView.as_view(), name='registration'),
