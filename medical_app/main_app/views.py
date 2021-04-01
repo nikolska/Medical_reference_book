@@ -1,5 +1,3 @@
-import itertools
-
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
@@ -19,124 +17,10 @@ from .forms import (
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
 
-class HomePageView(TemplateView):
-    """ Start (home) page. """
+class AuthorizationView(TemplateView):
+    """ Authorization page with 2 options: login or register. """
 
-    template_name = 'home_page.html'
-
-
-class OrgansListView(ListView):
-    """ Page with organs list from DB. """
-
-    model = Organ
-    context_object_name = 'organs'
-    template_name = 'organs_list.html'
-
-
-class SymptomsListView(CreateView, ListView):
-    """ Page with all symptoms from DB. """
-
-    model = Symptom
-    object_list = Symptom.objects.all()
-    form_class = SymptomCreateForm
-    template_name = 'symptoms_list.html'
-    context_object_name = 'symptoms'
-    success_url = reverse_lazy('symptoms_list')
-
-
-class TreatmentsListView(CreateView, ListView):
-    """ Page with all treatments from DB. """
-
-    model = Treatment
-    object_list = Treatment.objects.all()
-    form_class = TreatmentsCreateForm
-    template_name = 'treatments_list.html'
-    context_object_name = 'treatments'
-    success_url = reverse_lazy('treatments_list')
-
-
-class GeographicalAreaListView(CreateView, ListView):
-    """ Page with all geographical areas from DB. """
-
-    model = GeographicalArea
-    object_list = GeographicalArea.objects.all()
-    form_class = GeographicalAreaCreateForm
-    context_object_name = 'areas'
-    template_name = 'geographical_areas_list.html'
-    success_url = reverse_lazy('geographical_areas_list')
-
-
-class DiseasesListView(ListView):
-    """ Page with all disease from DB. """
-
-    model = Disease
-    context_object_name = 'diseases'
-    template_name = 'diseases_list.html'
-
-
-class DiseaseDetailsView(DetailView):
-    """ Page with disease's details like description, affected organs, symptoms, treatment. """
-
-    model = Disease
-    template_name = 'disease_details.html'
-
-    def get_context_data(self, **kwargs):
-        """Insert the form into the context dict"""
-
-        disease = get_object_or_404(Disease, pk=self.kwargs['pk'])
-        symptoms_details = DiseaseSymptom.objects.filter(disease=disease).order_by('-symptom_frequency')
-        ctx = super().get_context_data(**kwargs)
-        ctx["symptoms_details"] = symptoms_details
-        return ctx
-
-
-class SearchDiseaseView(FormView, ListView):
-    """ Searching for disease by symptoms and affected organs. """
-
-    model = Disease
-    template_name = 'search_disease.html'
-    form_class = DiseaseSearchForm
-
-    def post(self, request):
-        """Filter DB to search objects and redirect URL."""
-        symptoms = request.POST.getlist('symptoms')
-        organs = request.POST.getlist('affected_organs')
-        geographical_areas = request.POST.getlist('geographical_areas')
-
-        if organs:
-            try:
-                diseases = Disease.objects.filter(affected_organs__in=organs).distinct()
-            except:
-                raise Http404
-
-        if geographical_areas:
-            try:
-                diseases = Disease.objects.filter(geographical_area__in=geographical_areas).distinct()
-            except:
-                raise Http404
-
-        if symptoms:
-            try:
-                diseases = Disease.objects.filter(symptoms__in=symptoms).distinct()
-            except:
-                raise Http404
-
-        if not organs and not symptoms and not geographical_areas:
-            diseases = Disease.objects.order_by('name')
-
-        ctx = {'diseases': diseases}
-        return render(request, 'diseases_list.html', ctx)
-
-
-class OrganCreateView(UserPassesTestMixin, CreateView):
-    """ Adding new organ to DB. """
-    model = Organ
-    template_name = 'add_new_organ.html'
-    form_class = OrganCreateForm
-    success_url = reverse_lazy('organs_list')
-
-    def test_func(self):
-        return self.request.user.groups.filter(name='Doctors').exists()
+    template_name = 'authorization.html'
 
 
 class DiseaseCreateView(UserPassesTestMixin, CreateView):
@@ -155,10 +39,64 @@ class DiseaseCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.groups.filter(name='Doctors').exists()
 
 
-class AuthorizationView(TemplateView):
-    """ Authorization page with 2 options: login or register. """
+class DiseaseDetailsView(DetailView):
+    """ Page with disease's details like description, affected organs, symptoms, treatment. """
 
-    template_name = 'authorization.html'
+    model = Disease
+    template_name = 'disease_details.html'
+
+    def get_context_data(self, **kwargs):
+        """Insert the form into the context dict"""
+
+        disease = get_object_or_404(Disease, pk=self.kwargs['pk'])
+        symptoms_details = DiseaseSymptom.objects.filter(disease=disease).order_by('-symptom_frequency')
+        ctx = super().get_context_data(**kwargs)
+        ctx["symptoms_details"] = symptoms_details
+        return ctx
+
+
+class DiseasesListView(ListView):
+    """ Page with all disease from DB. """
+
+    model = Disease
+    context_object_name = 'diseases'
+    template_name = 'diseases_list.html'
+
+
+class GeographicalAreaListView(CreateView, ListView):
+    """ Page with all geographical areas from DB. """
+
+    model = GeographicalArea
+    object_list = GeographicalArea.objects.all()
+    form_class = GeographicalAreaCreateForm
+    context_object_name = 'areas'
+    template_name = 'geographical_areas_list.html'
+    success_url = reverse_lazy('geographical_areas_list')
+
+
+class HomePageView(TemplateView):
+    """ Start (home) page. """
+
+    template_name = 'home_page.html'
+
+
+class OrgansListView(ListView):
+    """ Page with organs list from DB. """
+
+    model = Organ
+    context_object_name = 'organs'
+    template_name = 'organs_list.html'
+
+
+class OrganCreateView(UserPassesTestMixin, CreateView):
+    """ Adding new organ to DB. """
+    model = Organ
+    template_name = 'add_new_organ.html'
+    form_class = OrganCreateForm
+    success_url = reverse_lazy('organs_list')
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='Doctors').exists()
 
 
 class RegistrationView(FormView):
@@ -199,6 +137,66 @@ class RegistrationView(FormView):
         user.user_permissions.add(permission)
         user.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class SearchDiseaseView(FormView, ListView):
+    """ Searching for disease by symptoms and affected organs. """
+
+    model = Disease
+    template_name = 'search_disease.html'
+    form_class = DiseaseSearchForm
+
+    def post(self, request):
+        """Filter DB to search objects and redirect URL."""
+        symptoms = request.POST.getlist('symptoms')
+        organs = request.POST.getlist('affected_organs')
+        geographical_areas = request.POST.getlist('geographical_areas')
+
+        if organs:
+            try:
+                diseases = Disease.objects.filter(affected_organs__in=organs).distinct()
+            except:
+                raise Http404
+
+        if geographical_areas:
+            try:
+                diseases = Disease.objects.filter(geographical_area__in=geographical_areas).distinct()
+            except:
+                raise Http404
+
+        if symptoms:
+            try:
+                diseases = Disease.objects.filter(symptoms__in=symptoms).distinct()
+            except:
+                raise Http404
+
+        if not organs and not symptoms and not geographical_areas:
+            diseases = Disease.objects.order_by('name')
+
+        ctx = {'diseases': diseases}
+        return render(request, 'diseases_list.html', ctx)
+
+
+class SymptomsListView(CreateView, ListView):
+    """ Page with all symptoms from DB. """
+
+    model = Symptom
+    object_list = Symptom.objects.all()
+    form_class = SymptomCreateForm
+    template_name = 'symptoms_list.html'
+    context_object_name = 'symptoms'
+    success_url = reverse_lazy('symptoms_list')
+
+
+class TreatmentsListView(CreateView, ListView):
+    """ Page with all treatments from DB. """
+
+    model = Treatment
+    object_list = Treatment.objects.all()
+    form_class = TreatmentsCreateForm
+    template_name = 'treatments_list.html'
+    context_object_name = 'treatments'
+    success_url = reverse_lazy('treatments_list')
 
 
 class UserPasswordUpdateView(PermissionRequiredMixin, PasswordChangeView):
