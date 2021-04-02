@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView
@@ -61,6 +61,29 @@ class DiseasesListView(ListView):
     model = Disease
     context_object_name = 'diseases'
     template_name = 'diseases_list.html'
+
+
+class DiseaseSearchView(FormView, ListView):
+    """ Searching for disease by symptoms and affected organs. """
+
+    model = Disease
+    template_name = 'search_disease.html'
+    form_class = DiseaseSearchForm
+
+    def post(self, request):
+        """Filter DB to search objects and redirect URL."""
+
+        symptoms = request.POST.getlist('symptoms')
+        organs = request.POST.getlist('affected_organs')
+        geographical_area = request.POST.getlist('geographical_area')
+
+        diseases = Disease.objects.all()
+        diseases = diseases.filter(affected_organs__in=organs) if organs else diseases
+        diseases = diseases.filter(geographical_area__in=geographical_area) if geographical_area else diseases
+        diseases = diseases.filter(symptoms__in=symptoms) if symptoms else diseases
+
+        ctx = {'diseases': diseases}
+        return render(request, 'diseases_list.html', ctx)
 
 
 class GeographicalAreaListView(CreateView, ListView):
@@ -137,44 +160,6 @@ class RegistrationView(FormView):
         user.user_permissions.add(permission)
         user.save()
         return HttpResponseRedirect(self.get_success_url())
-
-
-class SearchDiseaseView(FormView, ListView):
-    """ Searching for disease by symptoms and affected organs. """
-
-    model = Disease
-    template_name = 'search_disease.html'
-    form_class = DiseaseSearchForm
-
-    def post(self, request):
-        """Filter DB to search objects and redirect URL."""
-        symptoms = request.POST.getlist('symptoms')
-        organs = request.POST.getlist('affected_organs')
-        geographical_areas = request.POST.getlist('geographical_areas')
-
-        if organs:
-            try:
-                diseases = Disease.objects.filter(affected_organs__in=organs).distinct()
-            except:
-                raise Http404
-
-        if geographical_areas:
-            try:
-                diseases = Disease.objects.filter(geographical_area__in=geographical_areas).distinct()
-            except:
-                raise Http404
-
-        if symptoms:
-            try:
-                diseases = Disease.objects.filter(symptoms__in=symptoms).distinct()
-            except:
-                raise Http404
-
-        if not organs and not symptoms and not geographical_areas:
-            diseases = Disease.objects.order_by('name')
-
-        ctx = {'diseases': diseases}
-        return render(request, 'diseases_list.html', ctx)
 
 
 class SymptomsListView(CreateView, ListView):

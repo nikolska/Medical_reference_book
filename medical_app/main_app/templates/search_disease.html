@@ -37,7 +37,7 @@
     </table><br>
 
     <b>{{ form.symptoms.label }}:</b>
-    <input id="myInput" type="text" placeholder="search.."><br><br>
+    <input id="myInput" type="text" placeholder="search..">
     <table class="search-diseases-table-symptoms" id="myTable">
         {% for symptom in form.symptoms %}
             {% if forloop.counter0|divisibleby:4 %}

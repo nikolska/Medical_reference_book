@@ -21,10 +21,9 @@ from django.urls import path, re_path
 
 from main_app.views import (
     AuthorizationView, DiseaseCreateView, DiseaseDetailsView,
-    DiseasesListView, GeographicalAreaListView, HomePageView,
-    OrganCreateView, OrgansListView, RegistrationView,
-    SearchDiseaseView, SymptomsListView, TreatmentsListView,
-    UserPasswordUpdateView,
+    DiseasesListView, DiseaseSearchView, GeographicalAreaListView,
+    HomePageView, OrganCreateView, OrgansListView, RegistrationView,
+    SymptomsListView, TreatmentsListView, UserPasswordUpdateView
 )
 
 
@@ -35,7 +34,7 @@ urlpatterns = [
     path('diseases/', DiseasesListView.as_view(), name='diseases_list'),
     re_path(r'^diseases/(?P<pk>\d+)/$', DiseaseDetailsView.as_view(), name='disease_details'),
     path('diseases/add/', DiseaseCreateView.as_view(), name='add_disease'),
-    path('diseases/search/', SearchDiseaseView.as_view(), name='search_disease'),
+    path('diseases/search/', DiseaseSearchView.as_view(), name='search_disease'),
     path('geographical_areas/', GeographicalAreaListView.as_view(), name='geographical_areas_list'),
     path('login/', LoginView.as_view(template_name='log_in.html'), name='log_in'),
     path('logout/', LogoutView.as_view(), name='logout'),
