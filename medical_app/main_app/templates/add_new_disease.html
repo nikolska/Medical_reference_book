@@ -11,22 +11,66 @@
     <b>{{ form.name.label }}:</b>
     {{ form.name }}
 
-    <b>{{ form.description.label }}:</b>
+    <br><br><b>{{ form.description.label }}:</b>
     {{ form.description }}
 
-    <b>{{ form.geographical_area.label }}:</b><br>
-    {{ form.geographical_area }}
+    <br><br><b>{{ form.geographical_area.label }}:</b>
+    <table class="search-diseases-table">
+        {% for area in form.geographical_area %}
+            {% if forloop.counter0|divisibleby:7 %}
+                <tr>
+            {% endif %}
+                <td>{{ area }}</td>
+            {% if forloop.counter|divisibleby:7 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table><br>
 
     <b>{{ form.affected_organs.label }}:</b><br>
-    {{ form.affected_organs }}
+    <table class="search-diseases-table">
+        {% for organ in form.affected_organs %}
+            {% if forloop.counter0|divisibleby:10 %}
+                <tr>
+            {% endif %}
+                <td>{{ organ }}</td>
+            {% if forloop.counter|divisibleby:10 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table><br>
 
-    <b>{{ form.symptoms.label }}:</b><br>
-    <input id="myInputSymptom" type="text" placeholder="search symptom.."><br>
-    {{ form.symptoms }}
+    <b>{{ form.symptoms.label }}:</b>
+    <input id="myInput" type="text" placeholder="search..">
+    <table class="search-diseases-table-symptoms" id="myTable">
+        {% for symptom in form.symptoms %}
+            {% if forloop.counter0|divisibleby:4 %}
+                <tr>
+            {% endif %}
+                <td>{{ symptom }}</td>
+            {% if forloop.counter|divisibleby:4 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table><br>
 
-    <b>{{ form.treatment.label }}:</b><br>
-    <input id="myInputTreatment" type="text" placeholder="search symptom.."><br>
-    {{ form.treatment }}
+    <b>{{ form.treatment.label }}:</b>
+    <input id="myInput2" type="text" placeholder="search..">
+    <table class="search-diseases-table-symptoms" id="myTable2">
+        {% for treatment in form.treatment %}
+            {% if forloop.counter0|divisibleby:4 %}
+                <tr>
+            {% endif %}
+                <td>{{ treatment }}</td>
+            {% if forloop.counter|divisibleby:4 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table><br>
 
     <input type="submit" id="btn-add-disease" value="Add">
 </form>

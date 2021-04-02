@@ -66,6 +66,15 @@ $(document).ready(function(){
   });
 });
 
+$(document).ready(function(){
+  $("#myInput2").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable2 td").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
 const links = document.querySelectorAll("a.image");
 const lightbox = document.querySelector(".lightbox");
 const lightboxCtn = document.querySelector(".lightbox-cnt");
