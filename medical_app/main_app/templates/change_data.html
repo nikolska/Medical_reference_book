@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Change personal data{% endblock %}
+
+
+{% block content %}
+
+<h2 align="center">Change your personal data</h2><br>
+
+<div align="center">
+    <form method="POST">
+        {% csrf_token %}
+
+        <b>{{ form.first_name.label }}</b>:
+        {{ form.first_name }}
+
+        <br><br>
+        <b>{{ form.last_name.label }}</b>:
+        {{ form.last_name }}
+
+        <br><br>
+        {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <b>{{ form.username.label }}</b>:
+        {{ form.username }}
+        <div id="passwordHelpBlock" class="form-text">
+            150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        </div><br>
+
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <b>{{ form.email.label }}</b>:
+        {{ form.email }}
+
+        <br><br><b>{{ form.medical_license.label }}</b>:
+        {{ form.medical_license }}
+
+        <br><br><input type="submit" value="Change">
+    </form>
+</div>
+
+{% endblock %}

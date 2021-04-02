@@ -124,3 +124,11 @@ class UserCreateForm(forms.ModelForm):
         if User.objects.filter(username=cleaned_data['username']):
             self.add_error('username', 'This username is already taken, try another one!')
 
+
+class UserUpdateForm(forms.ModelForm):
+    """Update user's data form."""
+
+    class Meta:
+        """Meta class."""
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'medical_license']

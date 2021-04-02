@@ -23,7 +23,7 @@ from main_app.views import (
     AuthorizationView, DiseaseCreateView, DiseaseDetailsView,
     DiseasesListView, DiseaseSearchView, GeographicalAreaListView,
     HomePageView, OrganCreateView, OrgansListView, RegistrationView,
-    SymptomsListView, TreatmentsListView, UserPasswordUpdateView
+    SymptomsListView, TreatmentsListView, UserDataUpdateView, UserPasswordUpdateView
 )
 
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='home_page'),
     path('admin/', admin.site.urls, name='admin'),
     path('authorization/', AuthorizationView.as_view(), name='authorization'),
+    re_path(r'^data_change/(?P<pk>\d+)/$', UserDataUpdateView.as_view(), name='change_data'),
     path('diseases/', DiseasesListView.as_view(), name='diseases_list'),
     re_path(r'^diseases/(?P<pk>\d+)/$', DiseaseDetailsView.as_view(), name='disease_details'),
     path('diseases/add/', DiseaseCreateView.as_view(), name='add_disease'),

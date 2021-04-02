@@ -8,11 +8,11 @@ from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView
+from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, UpdateView
 
 from .forms import (
     DiseaseCreateForm, DiseaseSearchForm, GeographicalAreaCreateForm,
-    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm
+    OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm, UserUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
 
@@ -184,10 +184,19 @@ class TreatmentsListView(CreateView, ListView):
     success_url = reverse_lazy('treatments_list')
 
 
+class UserDataUpdateView(PermissionRequiredMixin, UpdateView):
+    """Change user's data: first and last name, email."""
+
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'change_data.html'
+    success_url = reverse_lazy('home_page')
+    permission_required = 'main_app.change_user'
+
+
 class UserPasswordUpdateView(PermissionRequiredMixin, PasswordChangeView):
     """Change user's password."""
 
     template_name = 'change_password.html'
     success_url = reverse_lazy('home_page')
     permission_required = 'main_app.change_user'
-
