@@ -1,10 +1,10 @@
 from formtools.preview import FormPreview
 from formtools.wizard.views import WizardView, SessionWizardView
 
-from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -63,15 +63,15 @@ class DiseasesListView(ListView):
     template_name = 'diseases_list.html'
 
 
-class DiseaseSearchView(FormView, ListView):
+class DiseaseSearchView(FormView):
     """ Searching for disease by symptoms and affected organs. """
 
     model = Disease
     template_name = 'search_disease.html'
     form_class = DiseaseSearchForm
 
-    def post(self, request):
-        """Filter DB to search objects and redirect URL."""
+    def post(self, request, *args, **kwargs):
+        """Filter DB to search objects and redirect URL with found diseases."""
 
         symptoms = request.POST.getlist('symptoms')
         organs = request.POST.getlist('affected_organs')
@@ -162,25 +162,27 @@ class RegistrationView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class SymptomsListView(CreateView, ListView):
+class SymptomsListView(SuccessMessageMixin, CreateView, ListView):
     """ Page with all symptoms from DB. """
 
     model = Symptom
     object_list = Symptom.objects.all()
     form_class = SymptomCreateForm
-    template_name = 'symptoms_list.html'
     context_object_name = 'symptoms'
+    template_name = 'symptoms_list.html'
+    success_message = "New symptom %(name)s successfully created!"
     success_url = reverse_lazy('symptoms_list')
 
 
-class TreatmentsListView(CreateView, ListView):
+class TreatmentsListView(SuccessMessageMixin, CreateView, ListView):
     """ Page with all treatments from DB. """
 
     model = Treatment
     object_list = Treatment.objects.all()
     form_class = TreatmentsCreateForm
-    template_name = 'treatments_list.html'
     context_object_name = 'treatments'
+    template_name = 'treatments_list.html'
+    success_message = "New treatment %(treatment)s successfully created!"
     success_url = reverse_lazy('treatments_list')
 
 

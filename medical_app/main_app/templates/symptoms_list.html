@@ -6,6 +6,12 @@
 
 {% block content %}
 
+{% if messages %}
+    {% for message in messages %}
+        <h3 style="color: darkblue" align="center">{{ message }}</h3><br>
+    {% endfor %}
+{% endif %}
+
 <div class="symptoms-view">
     <div>
         <p align="center"><input id="searchInput" type="text" placeholder="search symptom.."></p>
