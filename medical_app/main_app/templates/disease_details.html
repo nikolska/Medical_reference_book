@@ -5,6 +5,12 @@
 
 {% block content %}
 
+{% if messages %}
+    {% for message in messages %}
+        <h3 style="color: darkblue" align="center">{{ message }}</h3><br>
+    {% endfor %}
+{% endif %}
+
 <h1 align="center">{{ disease.name }}</h1><br>
 <p><b>Description:</b> {{ disease.description|linebreaks }}</p><br>
 <p><b>Affected organs:</b> {{ disease.affected_organs.all|join:", " }}</p>

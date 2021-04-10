@@ -23,12 +23,13 @@ class AuthorizationView(TemplateView):
     template_name = 'authorization.html'
 
 
-class DiseaseCreateView(UserPassesTestMixin, CreateView):
+class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     """Create new disease"""
 
     model = Disease
     form_class = DiseaseCreateForm
     template_name = 'add_new_disease.html'
+    success_message = 'New disease %(name)s successfully created!'
     success_url = reverse_lazy('disease_details')
 
     def get_success_url(self, **kwargs):
@@ -86,7 +87,7 @@ class DiseaseSearchView(FormView):
         return render(request, 'diseases_list.html', ctx)
 
 
-class GeographicalAreaListView(CreateView, ListView):
+class GeographicalAreaListView(SuccessMessageMixin, CreateView, ListView):
     """ Page with all geographical areas from DB. """
 
     model = GeographicalArea
@@ -94,6 +95,7 @@ class GeographicalAreaListView(CreateView, ListView):
     form_class = GeographicalAreaCreateForm
     context_object_name = 'areas'
     template_name = 'geographical_areas_list.html'
+    success_message = 'New area %(area)s successfully created!'
     success_url = reverse_lazy('geographical_areas_list')
 
 
@@ -111,11 +113,12 @@ class OrgansListView(ListView):
     template_name = 'organs_list.html'
 
 
-class OrganCreateView(UserPassesTestMixin, CreateView):
+class OrganCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     """ Adding new organ to DB. """
     model = Organ
-    template_name = 'add_new_organ.html'
     form_class = OrganCreateForm
+    template_name = 'add_new_organ.html'
+    success_message = 'New organ %(name)s successfully created!'
     success_url = reverse_lazy('organs_list')
 
     def test_func(self):
