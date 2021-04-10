@@ -205,3 +205,8 @@ class UserPasswordUpdateView(PermissionRequiredMixin, PasswordChangeView):
     template_name = 'change_password.html'
     success_url = reverse_lazy('home_page')
     permission_required = 'main_app.change_user'
+
+    def form_valid(self, form):
+        """Save the new user's password."""
+        form.save()
+        return super().form_valid(form)
