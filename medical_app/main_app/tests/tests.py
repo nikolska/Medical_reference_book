@@ -1,5 +1,4 @@
 import pytest
-from PIL import Image
 
 from django.urls import reverse
 
@@ -25,23 +24,6 @@ def test_organs_list_view(client):
     url = reverse('organs_list')
     response = client.get(url)
     assert response.status_code == 200
-
-
-# @pytest.mark.django_db
-# def test_organ_create_view(client):
-#     url = reverse('add_organ')
-#
-#     with Image.open(r'\static\img\test.jpg') as img:
-#         data = {
-#             'name': 'test organ',
-#             'description': 'test description',
-#             'image': img
-#         }
-#         response = client.post(url, data)
-#         organ = Organ.objects.get(name='test organ')
-#         assert response.status_code == 302
-#         assert Organ.objects.count() == 1
-#         assert organ
 
 
 @pytest.mark.django_db

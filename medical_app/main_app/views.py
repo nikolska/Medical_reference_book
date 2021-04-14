@@ -1,17 +1,16 @@
-from formtools.preview import FormPreview
-from formtools.wizard.views import WizardView, SessionWizardView
+from formtools.wizard.views import SessionWizardView
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, UpdateView
 
 from .forms import (
-    DiseaseCreateForm, DiseaseSearchForm, GeographicalAreaCreateForm,
+    DiseaseCreateForm, DiseaseCreateForm2, DiseaseSearchForm, GeographicalAreaCreateForm,
     OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm, UserUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
@@ -27,7 +26,7 @@ class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     """Create new disease"""
 
     model = Disease
-    form_class = DiseaseCreateForm
+    form_list = [DiseaseCreateForm, DiseaseCreateForm2]
     template_name = 'add_new_disease.html'
     success_message = 'New disease %(name)s successfully created!'
     success_url = reverse_lazy('disease_details')
@@ -38,6 +37,56 @@ class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self):
         return self.request.user.groups.filter(name='Doctors').exists()
+
+
+class MyWizardView(SessionWizardView):
+    """Wizard View"""
+    template_name = "add_new_disease.html"
+    form_list = [DiseaseCreateForm, DiseaseCreateForm2]
+
+    def done(self, form_list, **kwargs):
+        if self.request.method == 'POST':
+            self.process_form_data(form_list)
+        return HttpResponseRedirect(reverse('diseases_list'))
+
+    def process_form_data(self, form_list):
+        for form in form_list:
+            if form.is_valid():
+                form_data = self.get_all_cleaned_data()
+
+                disease = Disease.objects.create(
+                    name=form_data['name'],
+                    description=form_data['description']
+                )
+
+                disease.affected_organs.set(form_data['affected_organs'])
+                disease.symptoms.set(form_data['symptoms'])
+                disease.geographical_area.set(form_data['geographical_area'])
+                disease.treatment.set(form_data['treatment'])
+                disease.save()
+
+                symptom = Symptom.objects.get(name=form_data['symptom'])
+                DiseaseSymptom.objects.create(
+                    disease=disease,
+                    symptom=symptom,
+                    symptom_frequency=form_data['symptom_frequency']
+                )
+
+                # for symptom in form_data['symptoms']:
+                #     disease_symptoms = DiseaseSymptom.objects.create(disease=disease)
+                #     disease_symptoms.symptom.set(Symptom.objects.filter(name=symptom))
+                #     disease_symptoms.symptom_frequency.set(form_list.cleaned_data['symptom_frequency'])
+                #     disease_symptoms.save()
+
+                # for i in range(0, len(symptoms)):
+                #     symptom = Symptom.objects.get(pk=symptoms[i])
+                #     DiseaseSymptom.objects.create(
+                #         disease=disease,
+                #         symptom=symptom,
+                #         symptom_frequency=symptom_frequency[i]
+                #     )
+
+                return form_data
 
 
 class DiseaseDetailsView(DetailView):

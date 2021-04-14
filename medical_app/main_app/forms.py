@@ -9,22 +9,39 @@ class DiseaseCreateForm(forms.ModelForm):
     class Meta:
         """Meta class"""
         model = Disease
-        fields = ['name', 'description', 'symptoms', 'affected_organs', 'geographical_area', 'treatment']
+        fields = ['name', 'description', 'affected_organs', 'symptoms', 'geographical_area', 'treatment']
         labels = {
             'name': 'Disease',
             'description': 'Description',
-            'symptoms': 'Symptoms',
             'affected_organs': 'Affected organs',
+            'symptoms': 'Symptoms',
             'geographical_area': 'Geographical Area',
             'treatment': 'Treatment'
         }
         widgets = {
             'name': forms.Textarea(attrs={'cols': 140, 'rows': 2}),
             'description': forms.Textarea(attrs={'cols': 140, 'rows': 5}),
+            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'geographical_area': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'affected_organs': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
-            'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'treatment': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'})
+        }
+
+
+class DiseaseCreateForm2(forms.ModelForm):
+    """Create new disease form 2"""
+
+    class Meta:
+        """Meta class"""
+        model = DiseaseSymptom
+        fields = ['symptom', 'symptom_frequency']
+        labels = {
+            'symptom': 'Symptom',
+            'symptom_frequency': 'Symptom frequency'
+        }
+        widgets = {
+            'symptom': forms.Select({'class': 'no-bullet-list'}),
+            'symptom_frequency': forms.RadioSelect({'class': 'no-bullet-list'})
         }
 
 
