@@ -13,7 +13,7 @@
 {% endif %}
 
 {% if request.user.is_authenticated %}
-    {% if request.user|has_group:"Doctors" %}
+    {% if request.user|has_group:"Doctors" or request.user.is_superuser %}
         <button type="button" class="btn btn-outline-light">
             <a href="{% url 'add_organ' %}">Add new organ</a>
         </button><br><br>

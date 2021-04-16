@@ -36,7 +36,7 @@ class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
         return reverse("disease_details", kwargs={'pk': self.object.pk})
 
     def test_func(self):
-        return self.request.user.groups.filter(name='Doctors').exists()
+        return self.request.user.groups.filter(name='Doctors').exists() or self.request.user.is_superuser
 
 
 class MyWizardView(SessionWizardView):
@@ -54,13 +54,16 @@ class MyWizardView(SessionWizardView):
             if form.is_valid():
                 form_data = self.get_all_cleaned_data()
 
+                # symptoms = [symptom for symptom in form_data['symptom']]
+                # not iterable, save only the last object
+
                 disease = Disease.objects.create(
                     name=form_data['name'],
                     description=form_data['description']
                 )
 
                 disease.affected_organs.set(form_data['affected_organs'])
-                disease.symptoms.set(form_data['symptoms'])
+                # disease.symptoms.set(symptoms)
                 disease.geographical_area.set(form_data['geographical_area'])
                 disease.treatment.set(form_data['treatment'])
                 disease.save()
@@ -71,12 +74,6 @@ class MyWizardView(SessionWizardView):
                     symptom=symptom,
                     symptom_frequency=form_data['symptom_frequency']
                 )
-
-                # for symptom in form_data['symptoms']:
-                #     disease_symptoms = DiseaseSymptom.objects.create(disease=disease)
-                #     disease_symptoms.symptom.set(Symptom.objects.filter(name=symptom))
-                #     disease_symptoms.symptom_frequency.set(form_list.cleaned_data['symptom_frequency'])
-                #     disease_symptoms.save()
 
                 # for i in range(0, len(symptoms)):
                 #     symptom = Symptom.objects.get(pk=symptoms[i])
@@ -171,7 +168,7 @@ class OrganCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('organs_list')
 
     def test_func(self):
-        return self.request.user.groups.filter(name='Doctors').exists()
+        return self.request.user.groups.filter(name='Doctors').exists() or self.request.user.is_superuser
 
 
 class RegistrationView(FormView):

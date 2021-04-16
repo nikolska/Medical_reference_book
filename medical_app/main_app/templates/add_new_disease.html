@@ -11,7 +11,7 @@
 <form action="" method="POST">
     {% csrf_token %}
 
-    <table>
+    <table id="add-new-symptom">
         {{ wizard.management_form }}
         {% if wizard.form.forms %}
             {{ wizard.form.management_form }}
@@ -21,12 +21,10 @@
         {% else %}
             {{ wizard.form }}
         {% endif %}
-    </table>
+    </table><br>
 
     {% if wizard.steps.prev %}
-        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">
-            {% trans "first step" %}
-        </button>
+        <input type="button" id="add-one-more-symptom" value="Add one more symptom">
         <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
             {% trans "prev step" %}
         </button>

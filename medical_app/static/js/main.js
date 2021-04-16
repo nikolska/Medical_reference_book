@@ -75,6 +75,35 @@ $(document).ready(function(){
   });
 });
 
+$(document).ready(function(){
+  $("input#id_image").on("change", function() {
+    const imageFile = $("input#id_image").get(0).files[0];
+
+    if (imageFile) {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        $("#previewImg").attr("src", reader.result);
+      };
+
+      reader.readAsDataURL(imageFile);
+    }
+  })
+});
+
+let addSymptomTable = document.querySelector("table#add-new-symptom");
+let tableBody = addSymptomTable.getElementsByTagName("tbody")[0];
+let tr1 = tableBody.children[0];
+let tr2 = tableBody.children[1];
+let addSymptomButton = document.querySelector("input#add-one-more-symptom");
+
+addSymptomButton.addEventListener('click', e => {
+    e.preventDefault();
+    let new1 = tr1.cloneNode(true);
+    let new2 = tr2.cloneNode(true);
+    addSymptomTable.append(new1, new2);
+});
+
 const links = document.querySelectorAll("a.image");
 const lightbox = document.querySelector(".lightbox");
 const lightboxCtn = document.querySelector(".lightbox-cnt");
@@ -100,46 +129,3 @@ lightbox.addEventListener('click', e => {
 lightboxCtn.addEventListener('click', e => {
     e.stopPropagation();
 });
-
-
-$(document).ready(function(){
-  $("input#id_image").on("change", function() {
-    const imageFile = $("input#id_image").get(0).files[0];
-
-    if (imageFile) {
-      const reader = new FileReader();
-
-      reader.onload = function () {
-        $("#previewImg").attr("src", reader.result);
-      };
-
-      reader.readAsDataURL(imageFile);
-    }
-  })
-});
-
-// Add new disease: if input is checked -> check selected option -> save id data object.
-// const inputs = document.querySelectorAll("input.input-symptoms");
-// const select_list = document.querySelectorAll("select.select-frequency");
-// const results = [];
-//
-// function checkingSelect() {
-//   for (let i=0; i<inputs.length; i++) {
-//     if (inputs[i].checked) {
-//       const data = `"symptom": "${inputs[i].value}","frequency": "${select_list[i].value}"`;
-//       results.push(data);
-//       console.log(data);
-//     }
-//   }
-// }
-//
-// const obj = checkingSelect();
-// $.ajax(
-//     {
-//         url:'http://127.0.0.1:8000/diseases/add/',
-//         data:json,
-//         type:'post',
-//         success:function(data){alert(data);},
-//         error:function(){alert('error');}
-//     }
-// );

@@ -29,7 +29,7 @@
     </div>
 
     {% if request.user.is_authenticated %}
-        {% if request.user|has_group:"Doctors" %}
+        {% if request.user|has_group:"Doctors" or request.user.is_superuser %}
             <div align="center">
                 <h4>Add new symptom</h4><br>
                 <form action="" method="POST">

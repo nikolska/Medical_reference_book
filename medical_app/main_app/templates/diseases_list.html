@@ -7,7 +7,7 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-    {% if request.user|has_group:"Doctors" %}
+    {% if request.user|has_group:"Doctors" or request.user.is_superuser %}
         <button type="button" class="btn btn-outline-light">
             <a href="{% url 'add_disease' %}">Add new disease</a>
         </button><br><br>

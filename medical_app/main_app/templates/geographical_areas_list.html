@@ -13,7 +13,7 @@
 {% endif %}
 
 {% if request.user.is_authenticated %}
-    {% if request.user|has_group:"Doctors" %}
+    {% if request.user|has_group:"Doctors" or request.user.is_superuser %}
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token%}
 
