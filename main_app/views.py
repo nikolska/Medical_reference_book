@@ -68,7 +68,7 @@ class MyWizardView(SessionWizardView):
                 disease.treatment.set(form_data['treatment'])
                 disease.save()
 
-                symptom = Symptom.objects.get(name=form_data['symptom'])
+                symptom = Symptom.objects.get(name=form_data.get_all['symptom'])
                 DiseaseSymptom.objects.create(
                     disease=disease,
                     symptom=symptom,

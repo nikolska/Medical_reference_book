@@ -18,7 +18,7 @@ class Organ(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='media/organs/')
+    image = models.ImageField(upload_to='organs/')
 
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class GeographicalArea(models.Model):
     """ Geographical Area model. """
 
     area = models.TextField()
-    image = models.ImageField(upload_to='media/geographical_area/')
+    image = models.ImageField(upload_to='geographical_area/')
 
     def __str__(self):
         return self.area
@@ -100,7 +100,10 @@ class DiseaseSymptom(models.Model):
 
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     symptom = models.ForeignKey(Symptom, on_delete=models.CASCADE)
-    symptom_frequency = models.PositiveSmallIntegerField(choices=SYMPTOM_FREQUENCY_CHOICES, default=0)
+    symptom_frequency = models.PositiveSmallIntegerField(
+        choices=SYMPTOM_FREQUENCY_CHOICES, 
+        default=0
+    )
 
     def __str__(self):
         return f'{self.disease} / {self.symptom}'
