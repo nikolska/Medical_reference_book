@@ -18,7 +18,7 @@ class Organ(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='main_app/organs/')
+    image = models.ImageField(upload_to='organs/')
 
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class GeographicalArea(models.Model):
     """ Geographical Area model. """
 
     area = models.TextField()
-    image = models.ImageField(upload_to='main_app/geographical_area/')
+    image = models.ImageField(upload_to='geographical_area/')
 
     def __str__(self):
         return self.area
