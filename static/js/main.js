@@ -91,19 +91,6 @@ $(document).ready(function(){
   })
 });
 
-let addSymptomTable = document.querySelector("table#add-new-symptom");
-let tableBody = addSymptomTable.getElementsByTagName("tbody")[0];
-let tr1 = tableBody.children[0];
-let tr2 = tableBody.children[1];
-let addSymptomButton = document.querySelector("input#add-one-more-symptom");
-
-addSymptomButton.addEventListener('click', e => {
-    e.preventDefault();
-    let new1 = tr1.cloneNode(true);
-    let new2 = tr2.cloneNode(true);
-    addSymptomTable.append(new1, new2);
-});
-
 const links = document.querySelectorAll("a.image");
 const lightbox = document.querySelector(".lightbox");
 const lightboxCtn = document.querySelector(".lightbox-cnt");

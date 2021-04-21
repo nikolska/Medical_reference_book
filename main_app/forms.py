@@ -43,6 +43,9 @@ class DiseaseCreateForm2(forms.ModelForm):
         }
 
 
+DiseaseFormSet = forms.formset_factory(DiseaseCreateForm2, extra=10)
+
+
 class DiseaseSearchForm(forms.ModelForm):
     """Form to search the disease."""
 

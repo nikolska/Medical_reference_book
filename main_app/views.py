@@ -1,5 +1,6 @@
 from formtools.wizard.views import SessionWizardView
 
+from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
@@ -10,7 +11,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, TemplateView, UpdateView
 
 from .forms import (
-    DiseaseCreateForm, DiseaseCreateForm2, DiseaseSearchForm, GeographicalAreaCreateForm,
+    DiseaseCreateForm, DiseaseFormSet, DiseaseSearchForm, GeographicalAreaCreateForm,
     OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm, UserUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
@@ -22,68 +23,50 @@ class AuthorizationView(TemplateView):
     template_name = 'authorization.html'
 
 
-class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
+class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, SessionWizardView):
     """Create new disease"""
 
-    model = Disease
-    form_list = [DiseaseCreateForm, DiseaseCreateForm2]
-    template_name = 'add_new_disease.html'
-    success_message = 'New disease %(name)s successfully created!'
-    success_url = reverse_lazy('disease_details')
-
-    def get_success_url(self, **kwargs):
-        """Return the URL to redirect to after processing a valid form"""
-        return reverse("disease_details", kwargs={'pk': self.object.pk})
-
-    def test_func(self):
-        return self.request.user.groups.filter(name='Doctors').exists() or self.request.user.is_superuser
-
-
-class MyWizardView(SessionWizardView):
-    """Wizard View"""
     template_name = "add_new_disease.html"
-    form_list = [DiseaseCreateForm, DiseaseCreateForm2]
-
-    def done(self, form_list, **kwargs):
-        if self.request.method == 'POST':
-            self.process_form_data(form_list)
-        return HttpResponseRedirect(reverse('diseases_list'))
+    form_list = [DiseaseCreateForm, DiseaseFormSet]
 
     def process_form_data(self, form_list):
         for form in form_list:
             if form.is_valid():
                 form_data = self.get_all_cleaned_data()
-
-                # symptoms = [symptom for symptom in form_data['symptom']]
-                # not iterable, save only the last object
-
+                formset = form_data['formset-1']
+                
                 disease = Disease.objects.create(
                     name=form_data['name'],
                     description=form_data['description']
                 )
 
                 disease.affected_organs.set(form_data['affected_organs'])
-                # disease.symptoms.set(symptoms)
                 disease.geographical_area.set(form_data['geographical_area'])
                 disease.treatment.set(form_data['treatment'])
                 disease.save()
 
-                symptom = Symptom.objects.get(name=form_data.get_all['symptom'])
-                DiseaseSymptom.objects.create(
-                    disease=disease,
-                    symptom=symptom,
-                    symptom_frequency=form_data['symptom_frequency']
-                )
-
-                # for i in range(0, len(symptoms)):
-                #     symptom = Symptom.objects.get(pk=symptoms[i])
-                #     DiseaseSymptom.objects.create(
-                #         disease=disease,
-                #         symptom=symptom,
-                #         symptom_frequency=symptom_frequency[i]
-                #     )
+                for i in range(len(formset)):
+                    try: 
+                        symptom = Symptom.objects.get(name=formset[i]['symptom'])
+                        DiseaseSymptom.objects.create(
+                            disease=disease,
+                            symptom=symptom,
+                            symptom_frequency=formset[i]['symptom_frequency']
+                        )
+                    except KeyError:
+                        return form_data
 
                 return form_data
+
+    def done(self, form_list, **kwargs):
+        if self.request.method == 'POST':
+            self.process_form_data(form_list)
+            disease = self.process_form_data(form_list)['name']
+            messages.success(self.request, f'New disease {disease} successfully created!')
+        return HttpResponseRedirect(reverse('diseases_list'))
+    
+    def test_func(self):
+        return self.request.user.groups.filter(name='Doctors').exists() or self.request.user.is_superuser
 
 
 class DiseaseDetailsView(DetailView):

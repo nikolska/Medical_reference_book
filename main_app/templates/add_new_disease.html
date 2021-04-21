@@ -24,7 +24,6 @@
     </table><br>
 
     {% if wizard.steps.prev %}
-        <input type="button" id="add-one-more-symptom" value="Add one more symptom">
         <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
             {% trans "prev step" %}
         </button>
@@ -32,76 +31,5 @@
 
     <input type="submit" value="{% trans 'submit' %}"/>
 </form>
-
-
-<!--<form action="" method="POST">-->
-<!--    {% csrf_token%}-->
-
-<!--    <b>{{ form.name.label }}:</b>-->
-<!--    {{ form.name }}-->
-
-<!--    <br><br><b>{{ form.description.label }}:</b>-->
-<!--    {{ form.description }}-->
-
-<!--    <br><br><b>{{ form.geographical_area.label }}:</b>-->
-<!--    <table class="search-diseases-table">-->
-<!--        {% for area in form.geographical_area %}-->
-<!--            {% if forloop.counter0|divisibleby:7 %}-->
-<!--                <tr>-->
-<!--            {% endif %}-->
-<!--                <td>{{ area }}</td>-->
-<!--            {% if forloop.counter|divisibleby:7 %}-->
-<!--                </tr>-->
-<!--            {% endif %}-->
-<!--        {% endfor %}-->
-<!--        </tr>-->
-<!--    </table><br>-->
-
-<!--    <b>{{ form.affected_organs.label }}:</b><br>-->
-<!--    <table class="search-diseases-table">-->
-<!--        {% for organ in form.affected_organs %}-->
-<!--            {% if forloop.counter0|divisibleby:10 %}-->
-<!--                <tr>-->
-<!--            {% endif %}-->
-<!--                <td>{{ organ }}</td>-->
-<!--            {% if forloop.counter|divisibleby:10 %}-->
-<!--                </tr>-->
-<!--            {% endif %}-->
-<!--        {% endfor %}-->
-<!--        </tr>-->
-<!--    </table><br>-->
-
-<!--    <b>{{ form.symptoms.label }}:</b>-->
-<!--    <input id="myInput" type="text" placeholder="search..">-->
-<!--    <table class="search-diseases-table-symptoms" id="myTable">-->
-<!--        {% for symptom in form.symptoms %}-->
-<!--            {% if forloop.counter0|divisibleby:4 %}-->
-<!--                <tr>-->
-<!--            {% endif %}-->
-<!--                <td>{{ symptom }}</td>-->
-<!--            {% if forloop.counter|divisibleby:4 %}-->
-<!--                </tr>-->
-<!--            {% endif %}-->
-<!--        {% endfor %}-->
-<!--        </tr>-->
-<!--    </table><br>-->
-
-<!--    <b>{{ form.treatment.label }}:</b>-->
-<!--    <input id="myInput2" type="text" placeholder="search..">-->
-<!--    <table class="search-diseases-table-symptoms" id="myTable2">-->
-<!--        {% for treatment in form.treatment %}-->
-<!--            {% if forloop.counter0|divisibleby:4 %}-->
-<!--                <tr>-->
-<!--            {% endif %}-->
-<!--                <td>{{ treatment }}</td>-->
-<!--            {% if forloop.counter|divisibleby:4 %}-->
-<!--                </tr>-->
-<!--            {% endif %}-->
-<!--        {% endfor %}-->
-<!--        </tr>-->
-<!--    </table><br>-->
-
-<!--    <input type="submit" id="btn-add-disease" value="Add">-->
-<!--</form>-->
 
 {% endblock %}
