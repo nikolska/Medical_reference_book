@@ -18,7 +18,7 @@
         </a></h5>
 
     {% else %}
-        <h1>Hello! </h1><br>
+        <h1>Welcome!</h1><br>
         <h3>This is the <b>MedicalWebSite</b> allows you to search for diseases by symptoms,
             affected organs and/or the geographical location of the spread.</h3><br>
         <h5>If you are doctor and have a valid license you can add to the DataBase new diseases
@@ -26,8 +26,34 @@
         <h5>Please, <a href="{% url 'log_in' %}">log in</a> or
             <a href="{% url 'registration' %}">register</a>
             on our <b>MedicalWebSite</b> for more options.</h5><br>
-        <h5>If you have any questions, please, <a href="">contact us</a>!</h5>
     {% endif %}
+
+    <br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <h3 style="color: darkblue;">{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
+    <br><h4><b>Contact form</b></h4>
+
+    <div class="contact-form">
+        <form action="" method="POST">
+            {% csrf_token %}
+    
+            <b>{{ form.sender.label }}:</b>
+            {{ form.sender }}
+            
+            <br><br><b>{{ form.sender_email.label }}:</b>
+            {{ form.sender_email }}
+    
+            <br><b>{{ form.message_text.label }}:</b><br>
+            {{ form.message_text }}
+    
+            <br><br><input type="submit" value="Send message">
+        </form>
+    </div>
 
 </div>
 

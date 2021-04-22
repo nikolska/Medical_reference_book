@@ -1,6 +1,9 @@
 from django import forms
 
-from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
+from .models import (
+    Disease, DiseaseSymptom, GeographicalArea, 
+    Organ, Symptom, Treatment, User
+)
 
 
 class DiseaseCreateForm(forms.ModelForm):
@@ -70,6 +73,14 @@ class DiseaseSearchForm(forms.ModelForm):
             'symptoms': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
         }
 
+
+class ContactForm(forms.Form):
+    """Form to send a message to admin."""
+
+    sender = forms.CharField(label="Your Full Name", max_length=255, widget=forms.TextInput(attrs={'size': 50}))
+    sender_email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={'size': 50}))
+    message_text = forms.CharField(label="Message Text", widget=forms.Textarea(attrs={'cols': 70, 'rows': 4}))
+    
 
 class GeographicalAreaCreateForm(forms.ModelForm):
     """Create new treatment form"""

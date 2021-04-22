@@ -3,15 +3,17 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 
 
-class User(AbstractUser):
-    """User model."""
-    medical_license = models.BooleanField(default=False)
-    email = models.EmailField(unique=True)
+class GeographicalArea(models.Model):
+    """ Geographical Area model. """
 
-    @property
-    def full_name(self):
-        """Return user first name and last name."""
-        return f'{self.first_name} {self.last_name}'
+    area = models.TextField()
+    image = models.ImageField(upload_to='geographical_area/')
+
+    def __str__(self):
+        return self.area
+
+    class Meta:
+        ordering = ['area']
 
 
 class Organ(models.Model):
@@ -39,19 +41,6 @@ class Symptom(models.Model):
 
     class Meta:
         ordering = ['name']
-
-
-class GeographicalArea(models.Model):
-    """ Geographical Area model. """
-
-    area = models.TextField()
-    image = models.ImageField(upload_to='geographical_area/')
-
-    def __str__(self):
-        return self.area
-
-    class Meta:
-        ordering = ['area']
 
 
 class Treatment(models.Model):
@@ -111,3 +100,14 @@ class DiseaseSymptom(models.Model):
 
     class Meta:
         ordering = ['disease']
+
+
+class User(AbstractUser):
+    """User model."""
+    medical_license = models.BooleanField(default=False)
+    email = models.EmailField(unique=True)
+
+    @property
+    def full_name(self):
+        """Return user first name and last name."""
+        return f'{self.first_name} {self.last_name}'

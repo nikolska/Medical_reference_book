@@ -100,3 +100,9 @@ th {
 .no-bullet-list {
     list-style-type: none;
 }
+.contact-form {
+    border: 3px solid white;
+    border-radius: 10%;
+    padding: 15px;
+    max-width: 700px;
+}

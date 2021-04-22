@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = [('Anastzaja Szyjko', 'nikolska.work@gmail.com')]
+
 
 # Application definition
 
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-#DataFlair
+# Email send
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
