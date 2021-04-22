@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMi
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -15,6 +16,7 @@ from .forms import (
     OrganCreateForm, SymptomCreateForm, TreatmentsCreateForm, UserCreateForm, UserUpdateForm
 )
 from .models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
+from medical_app.settings import EMAIL_HOST_USER
 
 
 class AuthorizationView(TemplateView):
@@ -163,7 +165,8 @@ class RegistrationView(FormView):
     success_url = reverse_lazy('log_in')
 
     def form_valid(self, form):
-        """If the form is valid, register the user."""
+        """If the form is valid, register the user, send email and redirect to success URL."""
+
         first_name = form.cleaned_data['first_name']
         last_name = form.cleaned_data['last_name']
         username = form.cleaned_data['username']
@@ -191,6 +194,22 @@ class RegistrationView(FormView):
         user.set_password(password)
         user.user_permissions.add(permission)
         user.save()
+
+        subject = 'Welcome to MedicalWebSite'
+        message = f'''
+            {user.full_name}, welcome to MedicalWebSite! 
+            Hope you are enjoying using our MedicalWebSite.
+            Let's start http://medical-reference-book.herokuapp.com/
+        '''
+        recepient = str(form['email'].value())
+        send_mail(
+            subject, 
+            message, 
+            EMAIL_HOST_USER, 
+            [recepient], 
+            fail_silently = False
+        )
+
         return HttpResponseRedirect(self.get_success_url())
 
 

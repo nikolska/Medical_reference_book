@@ -6,6 +6,7 @@ from django.urls import reverse
 class User(AbstractUser):
     """User model."""
     medical_license = models.BooleanField(default=False)
+    email = models.EmailField(unique=True)
 
     @property
     def full_name(self):

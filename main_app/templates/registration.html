@@ -13,21 +13,44 @@
 <form method="POST">
     {% csrf_token %}
 
+
     <b>{{ form.first_name.label }} and {{ form.last_name.label }}:</b>
     {{ form.first_name }}
     {{ form.last_name }}
 
-    <br><br><b>{{ form.username.label }}:</b>
+    <br><br>
+
+    {% if form.username.errors %}
+        {% for error in form.username.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <b>{{ form.username.label }}:</b>
     {{ form.username }}
 
     <div id="passwordHelpBlock" class="form-text">
         150 characters or fewer. Letters, digits and @/./+/-/_ only.
     </div><br>
 
+    {% if form.email.errors %}
+        {% for error in form.email.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
     <b>{{ form.email.label }}:</b>
     {{ form.email }}
 
-    <br><br><b>{{ form.password.label }}:</b>
+    <br><br>
+    
+    {% if form.password.errors %}
+        {% for error in form.password.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <b>{{ form.password.label }}:</b>
     {{ form.password }}
 
     <div id="passwordHelpBlock" class="form-text">
