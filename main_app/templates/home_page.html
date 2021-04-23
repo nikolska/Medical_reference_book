@@ -7,6 +7,14 @@
 
 <div align="center">
 
+    {% if messages %}
+        {% for message in messages %}
+            <h3 style="color: darkblue;">{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+    
+    <br>
+
     {% if request.user.is_authenticated %}
         <br><br><h1>Hello, {{ request.user.full_name }}! </h1>
         <br><br><h3>Now you can start to work with the <b>MedicalWebSite</b>!</h3>
@@ -16,7 +24,6 @@
         <br><h5><a href="{% url 'change_password' request.user.pk %}">
             <b>Here you can change you password</b>
         </a></h5>
-
     {% else %}
         <h1>Welcome!</h1><br>
         <h3>This is the <b>MedicalWebSite</b> allows you to search for diseases by symptoms,
@@ -27,33 +34,12 @@
             <a href="{% url 'registration' %}">register</a>
             on our <b>MedicalWebSite</b> for more options.</h5><br>
     {% endif %}
-
-    <br>
-
-    {% if messages %}
-        {% for message in messages %}
-            <h3 style="color: darkblue;">{{ message }}</h3>
-        {% endfor %}
-    {% endif %}
-
-    <br><h4><b>Contact form</b></h4>
-
-    <div class="contact-form">
-        <form action="" method="POST">
-            {% csrf_token %}
     
-            <b>{{ form.sender.label }}:</b>
-            {{ form.sender }}
-            
-            <br><br><b>{{ form.sender_email.label }}:</b>
-            {{ form.sender_email }}
-    
-            <br><b>{{ form.message_text.label }}:</b><br>
-            {{ form.message_text }}
-    
-            <br><br><input type="submit" value="Send message">
-        </form>
-    </div>
+    <br><br>
+
+    <h4>If you have any questions or suggestions please 
+        <a href="{% url 'contact_page' %}">contact us</a>.
+    </h4>
 
 </div>
 

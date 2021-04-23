@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock %}
+
+
+{% block content %}
+
+<div align="center">
+
+    <h3><b>Contact form</b></h3><br>
+
+    {% if request.user.is_authenticated %}
+        <div class="contact-form">
+            <form action="" method="POST">
+                {% csrf_token %}
+        
+                <b>{{ form.sender.label }}:</b>
+                {{ request.user.full_name }}
+                
+                <br><b>{{ form.sender_email.label }}:</b>
+                {{ request.user.email }}
+        
+                <br><br><b>{{ form.message_text.label }}:</b><br>
+                {{ form.message_text }}
+        
+                <br><br><input type="submit" value="Send message">
+            </form>
+        </div>
+    {% else %}
+        <div class="contact-form">
+            <form action="" method="POST">
+                {% csrf_token %}
+        
+                <b>{{ form.sender.label }}:</b>
+                {{ form.sender }}
+                
+                <br><br><b>{{ form.sender_email.label }}:</b>
+                {{ form.sender_email }}
+        
+                <br><b>{{ form.message_text.label }}:</b><br>
+                {{ form.message_text }}
+        
+                <br><br><input type="submit" value="Send message">
+            </form>
+        </div>
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

@@ -26,6 +26,34 @@ class AuthorizationView(TemplateView):
     template_name = 'authorization.html'
 
 
+class ContactView(FormView):
+    """User can send the message for admin."""
+
+    form_class = ContactForm
+    template_name = 'contact_page.html'
+    success_url = reverse_lazy('home_page')
+
+    def form_valid(self, form):
+        """If the form is valid, send users's message and redirect to success URL."""
+        
+        if self.request.user.id is not None:
+            sender = self.request.user.full_name
+            sender_email = self.request.user.email
+        else:
+            sender = form.cleaned_data['sender']
+            sender_email = form.cleaned_data['sender_email']
+        
+        message = form.cleaned_data['message_text']
+
+        subject = f'Message from {sender}, {sender_email}'
+        
+        mail_admins(subject, message, fail_silently=False)
+        
+        messages.success(self.request, 'Your message successfully sent!')
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
 class DiseaseCreateView(SuccessMessageMixin, UserPassesTestMixin, SessionWizardView):
     """Create new disease"""
 
@@ -131,27 +159,10 @@ class GeographicalAreaListView(SuccessMessageMixin, CreateView, ListView):
     success_url = reverse_lazy('geographical_areas_list')
 
 
-class HomePageView(FormView, TemplateView):
-    """ Start (home) page with contact form. """
+class HomePageView(TemplateView):
+    """ Start (home) page. """
 
-    form_class = ContactForm
     template_name = 'home_page.html'
-    success_url = reverse_lazy('home_page')
-
-    def form_valid(self, form):
-        """If the form is valid, send users's message and redirect to success URL."""
-
-        sender = form.cleaned_data['sender']
-        sender_email = form.cleaned_data['sender_email']
-        message = form.cleaned_data['message_text']
-
-        subject = f'Message from {sender}, {sender_email}'
-        
-        mail_admins(subject, message, fail_silently=False)
-        
-        messages.success(self.request, 'Your message successfully sent!')
-
-        return HttpResponseRedirect(self.get_success_url())
 
 
 class OrgansListView(ListView):

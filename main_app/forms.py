@@ -77,9 +77,21 @@ class DiseaseSearchForm(forms.ModelForm):
 class ContactForm(forms.Form):
     """Form to send a message to admin."""
 
-    sender = forms.CharField(label="Your Full Name", max_length=255, widget=forms.TextInput(attrs={'size': 50}))
-    sender_email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={'size': 50}))
-    message_text = forms.CharField(label="Message Text", widget=forms.Textarea(attrs={'cols': 70, 'rows': 4}))
+    sender = forms.CharField(
+        label="Your Full Name", 
+        max_length=255, 
+        widget=forms.TextInput(attrs={'size': 50}),
+        required=False
+    )
+    sender_email = forms.EmailField(
+        label="Email Address", 
+        widget=forms.EmailInput(attrs={'size': 50}),
+        required=False
+    )
+    message_text = forms.CharField(
+        label="Message Text", 
+        widget=forms.Textarea(attrs={'cols': 70, 'rows': 4})
+    )
     
 
 class GeographicalAreaCreateForm(forms.ModelForm):
