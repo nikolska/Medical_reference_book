@@ -52,6 +52,8 @@ DiseaseFormSet = forms.formset_factory(DiseaseCreateForm2, extra=10)
 class DiseaseSearchForm(forms.ModelForm):
     """Form to search the disease."""
 
+    # all_areas = forms.BooleanField(label='All world', required=False)
+
     def __init__(self, *args, **kwargs):
         super(DiseaseSearchForm, self).__init__(*args, **kwargs)
         self.fields['symptoms'].required = False

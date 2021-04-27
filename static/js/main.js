@@ -91,6 +91,11 @@ $(document).ready(function(){
   })
 });
 
+// allAreas = document.querySelector('#all_areas');
+// allInputs = document.getElementsByName('geographical_area');
+// console.log(allAreas);
+// console.log(allInputs);
+
 const links = document.querySelectorAll("a.image");
 const lightbox = document.querySelector(".lightbox");
 const lightboxCtn = document.querySelector(".lightbox-cnt");

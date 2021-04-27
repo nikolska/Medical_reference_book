@@ -24,6 +24,10 @@
 
     <b>{{ form.geographical_area.label }}:</b>
     <table class="search-diseases-table">
+        <td>
+            <input type="checkbox" id="all_areas">
+            <label for="all_areas">All world</label>
+        </td>
         {% for area in form.geographical_area %}
             {% if forloop.counter0|divisibleby:7 %}
                 <tr>

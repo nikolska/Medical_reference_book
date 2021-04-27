@@ -137,11 +137,15 @@ class DiseaseSearchView(FormView):
         symptoms = request.POST.getlist('symptoms')
         organs = request.POST.getlist('affected_organs')
         geographical_area = request.POST.getlist('geographical_area')
+        # all_world = True if request.POST.get('all_areas') == 'on' else False
+        # all_areas_form_db = GeographicalArea.objects.all()
+        # all_areas = [item.pk for item in all_areas_form_db] 
 
         diseases = Disease.objects.all()
-        diseases = diseases.filter(affected_organs__in=organs) if organs else diseases
-        diseases = diseases.filter(geographical_area__in=geographical_area) if geographical_area else diseases
-        diseases = diseases.filter(symptoms__in=symptoms) if symptoms else diseases
+        diseases = diseases.filter(affected_organs__in=organs).distinct() if organs else diseases
+        diseases = diseases.filter(symptoms__in=symptoms).distinct() if symptoms else diseases
+        # diseases = diseases.filter(geographical_area__in=all_areas) if all_world else diseases
+        diseases = diseases.filter(geographical_area__in=geographical_area).distinct() if geographical_area else diseases
 
         ctx = {'diseases': diseases}
         return render(request, 'diseases_list.html', ctx)
