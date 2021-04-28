@@ -25,7 +25,7 @@
     <b>{{ form.geographical_area.label }}:</b>
     <table class="search-diseases-table">
         <td>
-            <input type="checkbox" id="all_areas">
+            <input type="checkbox" onClick="toggle(this)" name="all_areas" id="all_areas"/>
             <label for="all_areas">All world</label>
         </td>
         {% for area in form.geographical_area %}

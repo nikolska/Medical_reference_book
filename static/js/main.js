@@ -91,10 +91,14 @@ $(document).ready(function(){
   })
 });
 
-// allAreas = document.querySelector('#all_areas');
-// allInputs = document.getElementsByName('geographical_area');
-// console.log(allAreas);
-// console.log(allInputs);
+
+function toggle(source) {
+  checkboxes = document.getElementsByName('geographical_area');
+  for(let i=0, n=checkboxes.length; i<n; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
 
 const links = document.querySelectorAll("a.image");
 const lightbox = document.querySelector(".lightbox");

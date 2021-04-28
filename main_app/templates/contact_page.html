@@ -19,8 +19,8 @@
                 
                 <br><b>{{ form.sender_email.label }}:</b>
                 {{ request.user.email }}
-        
-                <br><br><b>{{ form.message_text.label }}:</b><br>
+
+                <br><b>{{ form.message_text.label }}:</b><br>
                 {{ form.message_text }}
         
                 <br><br><input type="submit" value="Send message">
@@ -37,7 +37,7 @@
                 <br><br><b>{{ form.sender_email.label }}:</b>
                 {{ form.sender_email }}
         
-                <br><b>{{ form.message_text.label }}:</b><br>
+                <br><br><b>{{ form.message_text.label }}:</b><br>
                 {{ form.message_text }}
         
                 <br><br><input type="submit" value="Send message">
