@@ -1,8 +1,12 @@
 import pytest
 
+from django.contrib import auth
 from django.urls import reverse
 
-from main_app.models import Disease, DiseaseSymptom, GeographicalArea, Organ, Symptom, Treatment, User
+from main_app.models import (
+    Disease, DiseaseSymptom, GeographicalArea, 
+    Organ, Symptom, Treatment, User
+)
 
 
 @pytest.mark.django_db
@@ -55,3 +59,49 @@ def test_symptoms_list_view(client):
     response = client.get(url)
     assert response.status_code == 200
 
+
+@pytest.mark.django_db
+def test_contact_page_view(client):
+    url = reverse('contact_page')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_contact_page_send_message(client):
+    url = reverse('contact_page')
+    response = client.post(url, {
+        'sender': 'Sender',
+        'sender_email': 'test@gmail.com',
+        'message': 'some message'
+    })
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_login_view(client, user):
+    url = reverse('log_in')
+    response = client.post(url, {
+        'username': user.username, 
+        'password': user.password
+    })
+    client.login(username=user.username, password=user.password)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_logout_view(client, user):
+    url = reverse('logout')
+    response = client.post(url, {'username': user.username})
+    client.logout()
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_change_data_view(client, user):
+    url = reverse('change_data', args=[user.pk])
+    response = client.post(url, {
+        'first_name': 'New',
+        'last_name': 'Name',
+    })
+    assert response.status_code == 302
