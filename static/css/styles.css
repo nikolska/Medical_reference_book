@@ -1,5 +1,6 @@
 body {
-    background-color: lightblue;
+    background-image: url('/static/img/background.jpg');
+    background-size: cover;
 }
 
 .body-content {
@@ -7,18 +8,21 @@ body {
 }
 
 .menu {
-    background-color: #87ceeb;
+    background-color:rgba(2, 180, 250, 0.4);
     padding: 5px;
     margin: 10px 5px;
     display: flex;
     justify-content: space-around;
+    border: thick double white;
     border-collapse: collapse;
-    border: 1px solid black;
+    border-radius: 20px;
 }
 
 .menu-a {
     padding: 5px;
-    color: black;
+    font-size: 19px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(255, 255, 255);
     text-decoration: none;
 }
 

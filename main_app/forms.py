@@ -21,8 +21,8 @@ class DiseaseCreateForm(forms.ModelForm):
             'treatment': 'Treatment'
         }
         widgets = {
-            'name': forms.Textarea(attrs={'cols': 140, 'rows': 2}),
-            'description': forms.Textarea(attrs={'cols': 140, 'rows': 5}),
+            'name': forms.Textarea(attrs={'cols': 130, 'rows': 2}),
+            'description': forms.Textarea(attrs={'cols': 130, 'rows': 5}),
             'geographical_area': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'affected_organs': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'}),
             'treatment': forms.CheckboxSelectMultiple({'class': 'no-bullet-list'})
